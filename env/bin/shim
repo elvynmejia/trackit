@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+export NODE_PATH='/vagrant/track-it/env/lib/node_modules'
+export NPM_CONFIG_PREFIX='/vagrant/track-it/env'
+export npm_config_prefix='/vagrant/track-it/env'
+exec 'env/bin/node' "$@"
