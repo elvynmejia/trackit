@@ -1,7 +1,17 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
+import { normalize, schema } from 'normalizr';
 
 import { modelTypeToModelMap } from 'models/map';
-import { API_FIND } from 'actions/api';
+import {
+  API_FIND,
+  API_FIND_ALL,
+  apiReceive,
+ } from 'actions/api';
+
+ import {
+  apiSuccess,
+  apiError,
+ } from 'actions/requests';
 
 const getModelClass = (modelType) => {
   const modelClass = modelTypeToModelMap[modelType];
@@ -13,24 +23,80 @@ const getModelClass = (modelType) => {
   throw new Error(`Model ${modelType} does not exist.`);
 }
 
-function* fetchOne(action) {
-  const { modelType, id, query } = action.payload;
+function* find(action) {
+  const { modelType, id, query, requestId } = action.payload;
   
   const modelClass = getModelClass(modelType);
 
   try {
-    const { 
-      data,
+    const { data, status } = yield call(modelClass.find.bind(modelClass), id, query);
+
+    const leads = new schema.Entity(modelType);
+
+    const normalizedData = normalize(Object.values(data)[0], leads);
+
+    yield put(apiReceive(
+      modelType,
+      normalizedData.entities,
+      requestId,
+    ));
+
+    yield put(apiSuccess({
+      modelType,
       status,
-    } = yield call(modelClass.find.bind(modelClass), id, query);
-    debugger
+      requestId,
+    }));
   } catch (e) {
-    debugger
+    const { status, data } = e.response;
+    const { message } = data;
+    yield put(apiError({
+      modelType,
+      status,
+      requestId,
+      ...data,
+    }));
   }
 }
 
+function* findAll(action) {
+  const { modelType, query, requestId } = action.payload;
+
+  const modelClass = getModelClass(modelType);
+
+  try {
+    const { data, status } = yield call(modelClass.findAll.bind(modelClass), query);
+    
+    const leads = new schema.Entity(modelType);
+
+    const normalizedData = normalize(Object.values(data)[0], [leads]);
+
+    yield put(apiReceive(
+      modelType,
+      normalizedData.entities,
+      requestId,
+    ));
+
+    yield put(apiSuccess({
+      modelType,
+      status,
+      requestId,
+    }));
+  } catch (e) {
+    const { status, data } = e.response;
+    const { message } = data;
+    yield put(apiError({
+      modelType,
+      status,
+      requestId,
+      ...data,
+    }));
+  }
+
+}
+
 function* apiSagas() {
-  yield takeLatest(API_FIND, fetchOne);
+  yield takeEvery(API_FIND, find);
+  yield takeEvery(API_FIND_ALL, findAll);
 }
 
 export default apiSagas;

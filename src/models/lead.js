@@ -11,4 +11,8 @@ export default class Lead {
   static async find(id, query={}) {
     return await axios.get(`${this.url}/${id}`);
   }
+
+  static async findAll(query={}) {
+    return await axios.get(`${this.url}`);
+  }
 }
