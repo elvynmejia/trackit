@@ -6,8 +6,10 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import cyan from '@material-ui/core/colors/cyan';
 import red from '@material-ui/core/colors/red';
 
-// import ResponsiveDrawer from './components/responsive_drawer';
 import store from './store';
+
+import Leads from 'components/leads/leads';
+
 
 const themeName = 'ontrail';
 
@@ -25,7 +27,7 @@ const App = () => {
     <Provider store={store}>
       <Router>
         <ThemeProvider theme={theme}>
-          A drawer
+          <Leads />
         </ThemeProvider>
       </Router>
     </Provider>

@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga'
 
-import { reducer as serverSide, find, findAll } from './actions/api';
+import { reducer as serverSide } from './actions/api';
 import { reducer as clientSide } from './actions/model';
 import { reducer as requests } from './actions/requests';
 
@@ -29,8 +29,5 @@ const store = createStore(
 );
 
 sagaMiddleware.run(apiSagas);
-
-store.dispatch(findAll('leads', {})); // a test
-// store.dispatch(find('leads', 20, {})); // a test
 
 export default store;

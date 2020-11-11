@@ -5,3 +5,5 @@ env/bin/npm start
 
 
 env/bin/node v1/proxy.js
+
+CHOKIDAR_USEPOLLING=true npm start

@@ -46,7 +46,6 @@ export const reducer = (state = {}, { type, payload = {} }) => {
 			};
 		case API_SUCCESS:
 		case API_ERROR:
-		debugger
 			return {
 				...state,
 				[modelType]: {
