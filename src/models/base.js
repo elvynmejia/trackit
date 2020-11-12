@@ -10,11 +10,11 @@ export class Base {
 	static url = '';
 
 	static async find(id, query={}) {
-    return await this.client.get(`${this.url}/${id}`);
+    return await this.client.get(`${this.url}/${id}`, { params: query });
   }
 
   static async findAll(query={}) {
-    return await this.client.get(`${this.url}`);
+    return await this.client.get(`${this.url}`, { params: query });
   }
 }
 
