@@ -92,7 +92,7 @@ export const Leads = () => {
   };
 
   return (
-  	<List
+    <List
       component="nav"
       aria-labelledby="nested-list-subheader"
       subheader={
@@ -105,27 +105,23 @@ export const Leads = () => {
       }
       className={classes.root}
     >
-    	{Object.values(leads).map(({id, company_name, position, status }) => {
-    		return (
-    			<div key={id}>
-    			  <ListItem button onClick={() => handleClick(id)}>
-			        <ListItemText primary={`${company_name} <> ${position || status}`} />
-			        {open[id] ? <ExpandLess /> : <ExpandMore />}
-			      </ListItem>
-			      <Collapse in={open[id]} timeout="auto" unmountOnExit>
-			        <List component="div" disablePadding>
-			          <ListItem button className={classes.nested}>
-{/*			            <ListItemIcon>
-			              <StarBorder />
-			            </ListItemIcon>
-			            <ListItemText primary="Starred" />*/}
+      {Object.values(leads).map(({id: lead_id, company_name, position, status }) => {
+        return (
+          <div key={lead_id}>
+          <ListItem button onClick={() => handleClick(lead_id)}>
+            <ListItemText primary={`${company_name} <> ${position || status}`} />
+              {open[lead_id] ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={open[lead_id]} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItem button className={classes.nested}>
                   <Timeline align="alternate">
-                    {Object.values(get(stages, [id], {})).map((stage, index) => {
+                    {Object.values(get(stages, [lead_id], {})).map(({ id: stage_id, state, title, notes}, index) => {
                       return (
-                        <TimelineItem key={`lead-${id}-stage-${stage.id}`}>
+                        <TimelineItem key={`lead-${lead_id}-stage-${stage_id}`}>
                           <TimelineOppositeContent>
                             <Typography variant="body2" color="textPrimary">
-                              {STATES[stage.state]}
+                              {STATES[state]}
                             </Typography>
                           </TimelineOppositeContent>
                           <TimelineSeparator>
@@ -135,10 +131,10 @@ export const Leads = () => {
                           <TimelineContent>
                             <Paper elevation={3} className={classes.paper}>
                               <Typography variant="h6" component="h1">
-                                {stage.title}
+                                {title}
                               </Typography>
                               <Typography>
-                                {stage.notes}
+                                {notes}
                                 Lorem Ipsum is simply dummy text of the printing and
                                 typesetting industry. Lorem Ipsum has been the industry's
                                 standard dummy text ever since the 1500s, when an unknown
@@ -156,12 +152,12 @@ export const Leads = () => {
                       )
                     })}
                   </Timeline>
-			          </ListItem>
-			        </List>
-			      </Collapse>
-    			</div>
-    		)
-    	})}
+                </ListItem>
+              </List>
+            </Collapse>
+          </div>
+        )
+    })}
     </List>
   );
 };
