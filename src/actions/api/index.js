@@ -56,18 +56,18 @@ export const apiUpdate = (modelType, data, requestId = getRequestId()) => ({
 export const reducer = (state = {}, { type, payload = {} }) => {
   const { responseData, modelType, requestId } = payload;
   switch(type) {
-    case API_RECEIVE:
-      return {
-        ...state,
-        [modelType]: {
-          [requestId]: {
-            ...state[modelType],
-            ...responseData[modelType],
-          },
+  case API_RECEIVE:
+    return {
+      ...state,
+      [modelType]: {
+        [requestId]: {
+          ...state[modelType],
+          ...responseData[modelType],
         },
-      };
-    default: 
-        return state;
+      },
+    };
+  default:
+    return state;
   }
 }
 

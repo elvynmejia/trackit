@@ -13,13 +13,13 @@ export const initialState = {
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
-	combineReducers({
+  combineReducers({
     ...initialState,
     serverSide,
     clientSide,
     requests,
-  }), 
-	{},
+  }),
+  {},
   compose(
     applyMiddleware(
     	sagaMiddleware,

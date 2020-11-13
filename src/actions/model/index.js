@@ -1,8 +1,8 @@
 // We should be able to differentiate between client vs server data
 // models is clearly client side data
 
-export const MODEL_CREATE = `model/create`;
-export const modelCreate = (modelType, payload = {}) =>  ({
+export const MODEL_CREATE = 'model/create';
+export const modelCreate = (modelType, payload = {}) => ({
   type: MODEL_CREATE,
   payload: {
     modelType,
@@ -10,8 +10,8 @@ export const modelCreate = (modelType, payload = {}) =>  ({
   },
 });
 
-export const MODEL_UPDATE = `model/update`;
-export const modelUpdate = (modelType, payload = {}) =>  ({
+export const MODEL_UPDATE = 'model/update';
+export const modelUpdate = (modelType, payload = {}) => ({
   type: MODEL_UPDATE,
   payload: {
     modelType,
@@ -28,7 +28,7 @@ export const reducer = (state = {}, { type, payload = {} }) => {
         message: `Creating this new model ${modelType}`,
       },
     };
-  case MODEL_UPDATE: 
+  case MODEL_UPDATE:
     return {
       [modelType]: {
         message: `Updating this new model ${modelType}`,

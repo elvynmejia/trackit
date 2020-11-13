@@ -1,4 +1,4 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
+import { call, put, takeEvery } from 'redux-saga/effects'
 import { normalize, schema } from 'normalizr';
 
 import { modelTypeToModelMap } from 'models/map';
@@ -6,12 +6,12 @@ import {
   API_FIND,
   API_FIND_ALL,
   apiReceive,
- } from 'actions/api';
+} from 'actions/api';
 
- import {
+import {
   apiSuccess,
   apiError,
- } from 'actions/requests';
+} from 'actions/requests';
 
 const getModelClass = (modelType) => {
   const modelClass = modelTypeToModelMap[modelType];
@@ -25,7 +25,7 @@ const getModelClass = (modelType) => {
 
 function* find(action) {
   const { modelType, id, query, requestId } = action.payload;
-  
+
   const modelClass = getModelClass(modelType);
 
   try {
@@ -53,6 +53,7 @@ function* find(action) {
       modelType,
       status,
       requestId,
+      message,
       ...data,
     }));
   }
@@ -65,7 +66,7 @@ function* findAll(action) {
 
   try {
     const { data, status } = yield call(modelClass.findAll.bind(modelClass), query);
-    
+
     const leads = new schema.Entity(modelType);
 
     const normalizedData = normalize(Object.values(data)[0], [leads]);
@@ -88,6 +89,7 @@ function* findAll(action) {
       modelType,
       status,
       requestId,
+      message,
       ...data,
     }));
   }

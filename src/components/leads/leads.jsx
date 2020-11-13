@@ -43,11 +43,11 @@ import { STATES } from 'constants/index';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    // maxWidth: 360,
+    maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
   },
   nested: {
-    paddingLeft: theme.spacing(4),
+    // paddingLeft: theme.spacing(4),
   },
   paper: {
     padding: '6px 16px',
@@ -56,8 +56,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
 }));
-
-// import { addCount } from "./store/counter/actions";
 
 const LEADS_REQUEST_ID = 'components/leads-request';
 const requestId = (id) => `${LEADS_REQUEST_ID}-${id}-stages`;
@@ -86,9 +84,11 @@ export const Leads = () => {
     ));
   }
 
-  const handleClick = (id) => {
+  const toggleListItem = (id) => {
     setOpen({...open, [id]: !open[id]});
-    fetchStages(id)
+    if (open[id]) {
+      fetchStages(id);
+    }
   };
 
   return (
@@ -105,11 +105,11 @@ export const Leads = () => {
       }
       className={classes.root}
     >
-      {Object.values(leads).map(({id: lead_id, company_name, position, status }) => {
+      {Object.values(leads).map(({id: lead_id, company_name, position, status, description }) => {
         return (
           <div key={lead_id}>
-          <ListItem button onClick={() => handleClick(lead_id)}>
-            <ListItemText primary={`${company_name} <> ${position || status}`} />
+          <ListItem button onClick={() => toggleListItem(lead_id)}>
+            <ListItemText primary={`${company_name} <> ${position || status} <> ${description}`} />
               {open[lead_id] ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse in={open[lead_id]} timeout="auto" unmountOnExit>
