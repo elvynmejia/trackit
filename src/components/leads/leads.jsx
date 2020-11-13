@@ -6,15 +6,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+// import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import SendIcon from '@material-ui/icons/Send';
+// import InboxIcon from '@material-ui/icons/MoveToInbox';
+// import DraftsIcon from '@material-ui/icons/Drafts';
+// import SendIcon from '@material-ui/icons/Send';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import StarBorder from '@material-ui/icons/StarBorder';
+// import StarBorder from '@material-ui/icons/StarBorder';
 
 
 // abtstract this
@@ -25,12 +25,12 @@ import TimelineConnector from '@material-ui/lab/TimelineConnector';
 import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
-import FastfoodIcon from '@material-ui/icons/Fastfood';
-import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-import Telegram from '@material-ui/icons/Telegram';
+// import FastfoodIcon from '@material-ui/icons/Fastfood';
+// import LaptopMacIcon from '@material-ui/icons/LaptopMac';
+// import Telegram from '@material-ui/icons/Telegram';
 
-import HotelIcon from '@material-ui/icons/Hotel';
-import RepeatIcon from '@material-ui/icons/Repeat';
+// import HotelIcon from '@material-ui/icons/Hotel';
+// import RepeatIcon from '@material-ui/icons/Repeat';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 // abstract this
@@ -43,7 +43,7 @@ import { STATES } from 'constants/index';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    maxWidth: 360,
+    // maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
   },
   nested: {
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LEADS_REQUEST_ID = 'components/leads-request';
-const requestId = (id) => `${LEADS_REQUEST_ID}-${id}-stages`;
+
 export const Leads = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState({});
@@ -85,7 +85,7 @@ export const Leads = () => {
   }
 
   const toggleListItem = (id) => {
-    setOpen({...open, [id]: !open[id]});
+    setOpen({[id]: !open[id]});
     if (open[id]) {
       fetchStages(id);
     }
@@ -108,8 +108,8 @@ export const Leads = () => {
       {Object.values(leads).map(({id: lead_id, company_name, position, status, description }) => {
         return (
           <div key={lead_id}>
-          <ListItem button onClick={() => toggleListItem(lead_id)}>
-            <ListItemText primary={`${company_name} <> ${position || status} <> ${description}`} />
+            <ListItem button onClick={() => toggleListItem(lead_id)}>
+              <ListItemText primary={`${company_name} <> ${position || status} <> ${description}`} />
               {open[lead_id] ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse in={open[lead_id]} timeout="auto" unmountOnExit>
@@ -157,7 +157,7 @@ export const Leads = () => {
             </Collapse>
           </div>
         )
-    })}
+      })}
     </List>
   );
 };

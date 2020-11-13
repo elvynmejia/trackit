@@ -1,4 +1,5 @@
 import { uuid } from 'uuidv4';
+import { get } from 'lodash';
 
 const getRequestId = () => uuid();
 
@@ -61,7 +62,7 @@ export const reducer = (state = {}, { type, payload = {} }) => {
       ...state,
       [modelType]: {
         [requestId]: {
-          ...state[modelType],
+          ...(get(state, [modelType, requestId], {})),
           ...responseData[modelType],
         },
       },
