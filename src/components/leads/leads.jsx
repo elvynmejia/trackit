@@ -6,15 +6,29 @@ import { makeStyles } from '@material-ui/core/styles';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-// import ListItemIcon from '@material-ui/core/ListItemIcon';
+
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
-// import InboxIcon from '@material-ui/icons/MoveToInbox';
-// import DraftsIcon from '@material-ui/icons/Drafts';
-// import SendIcon from '@material-ui/icons/Send';
 import ExpandLess from '@material-ui/icons/ExpandLess';
+
+
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardMedia from '@material-ui/core/CardMedia';
+// import CardContent from '@material-ui/core/CardContent';
+// import CardActions from '@material-ui/core/CardActions';
+// import Collapse from '@material-ui/core/Collapse';
+import Avatar from '@material-ui/core/Avatar';
+import IconButton from '@material-ui/core/IconButton';
+// import Typography from '@material-ui/core/Typography';
+import { red } from '@material-ui/core/colors';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import ShareIcon from '@material-ui/icons/Share';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-// import StarBorder from '@material-ui/icons/StarBorder';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import BusinessIcon from '@material-ui/icons/Business';
 
 
 // abtstract this
@@ -25,15 +39,10 @@ import TimelineConnector from '@material-ui/lab/TimelineConnector';
 import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
-// import FastfoodIcon from '@material-ui/icons/Fastfood';
-// import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-// import Telegram from '@material-ui/icons/Telegram';
-
-// import HotelIcon from '@material-ui/icons/Hotel';
-// import RepeatIcon from '@material-ui/icons/Repeat';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 // abstract this
+
 
 import { findAll } from 'actions/api';
 import { TYPE as LEAD_TYPE} from 'models/lead';
@@ -43,8 +52,9 @@ import { STATES } from 'constants/index';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    // maxWidth: 360,
+    // maxWidth: 500,
     backgroundColor: theme.palette.background.paper,
+    margin: '10px 3px',
   },
   nested: {
     // paddingLeft: theme.spacing(4),
@@ -92,73 +102,83 @@ export const Leads = () => {
   };
 
   return (
-    <List
-      component="nav"
-      aria-labelledby="nested-list-subheader"
-      subheader={
-        <ListSubheader
-          component="div"
-          id="nested-list-subheader"
-        >
-        	Job Leads
-        </ListSubheader>
-      }
-      className={classes.root}
-    >
+    <>
       {Object.values(leads).map(({id: lead_id, company_name, position, status, description }) => {
         return (
-          <div key={lead_id}>
-            <ListItem button onClick={() => toggleListItem(lead_id)}>
-              <ListItemText primary={`${company_name} <> ${position || status} <> ${description}`} />
-              {open[lead_id] ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
+          <Card key={lead_id} className={classes.root}>
+            <CardHeader
+              avatar={
+                <Avatar
+                  aria-label="lead"
+                  className={classes.avatar}
+                  variant="square"
+                >
+                  <BusinessIcon />
+                </Avatar>
+              }
+              action={
+                <IconButton aria-label="settings">
+                  <MoreVertIcon />
+                </IconButton>
+              }
+              title={company_name}
+              subheader={description}
+            />
+            <CardContent>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {position}
+              </Typography>
+            </CardContent>
+            <CardActions disableSpacing>
+              <IconButton aria-label="add to favorites">
+                <FavoriteIcon />
+              </IconButton>
+              <IconButton aria-label="share">
+                <ShareIcon />
+              </IconButton>
+              <IconButton
+                onClick={() => toggleListItem(lead_id)}
+                aria-expanded={open[lead_id]}
+                aria-label="show more"
+              >
+                {open[lead_id] ? <ExpandLess /> : <ExpandMore />}
+              </IconButton>
+            </CardActions>
             <Collapse in={open[lead_id]} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
-                <ListItem button className={classes.nested}>
-                  <Timeline align="alternate">
-                    {Object.values(get(stages, [lead_id], {})).map(({ id: stage_id, state, title, notes}, index) => {
-                      return (
-                        <TimelineItem key={`lead-${lead_id}-stage-${stage_id}`}>
-                          <TimelineOppositeContent>
-                            <Typography variant="body2" color="textPrimary">
-                              {STATES[state]}
+              <Timeline align="alternate">
+                {Object.values(get(stages, [lead_id], {})).map(
+                  ({ id: stage_id, state, title, notes }, index) => {
+                    return (
+                      <TimelineItem key={`lead-${lead_id}-stage-${stage_id}`}>
+                        <TimelineOppositeContent>
+                          <Typography variant="body2" color="textPrimary">
+                            {STATES[state]}
+                          </Typography>
+                        </TimelineOppositeContent>
+                        <TimelineSeparator>
+                          <TimelineDot color="primary" />
+                          <TimelineConnector />
+                        </TimelineSeparator>
+                        <TimelineContent>
+                          <Paper elevation={3} className={classes.paper}>
+                            <Typography variant="h6" component="h1">
+                              {title}
                             </Typography>
-                          </TimelineOppositeContent>
-                          <TimelineSeparator>
-                            <TimelineDot color="primary" />
-                            <TimelineConnector />
-                          </TimelineSeparator>
-                          <TimelineContent>
-                            <Paper elevation={3} className={classes.paper}>
-                              <Typography variant="h6" component="h1">
-                                {title}
-                              </Typography>
-                              <Typography>
-                                {notes}
-                                Lorem Ipsum is simply dummy text of the printing and
-                                typesetting industry. Lorem Ipsum has been the industry's
-                                standard dummy text ever since the 1500s, when an unknown
-                                printer took a galley of type and scrambled it to make a
-                                type specimen book. It has survived not only five centuries,
-                                but also the leap into electronic typesetting,
-                                remaining essentially unchanged.
-                                It was popularised in the 1960s with the release of Letraset
-                                sheets containing Lorem Ipsum passages, and more recently
-                                with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                              </Typography>
-                            </Paper>
-                          </TimelineContent>
-                        </TimelineItem>
-                      )
-                    })}
-                  </Timeline>
-                </ListItem>
-              </List>
+                            <Typography>
+                              {notes}
+                            </Typography>
+                          </Paper>
+                        </TimelineContent>
+                      </TimelineItem>
+                    );
+                  }
+                )}
+              </Timeline>
             </Collapse>
-          </div>
+          </Card>
         )
       })}
-    </List>
+    </>
   );
 };
 
