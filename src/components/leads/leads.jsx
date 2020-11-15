@@ -11,7 +11,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 
-
+import Chip from '@material-ui/core/Chip';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -71,12 +71,26 @@ const LEADS_REQUEST_ID = 'components/leads-request';
 
 export const Leads = () => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState({});
-
-  const leads = useSelector(state => get(state.serverSide, [LEAD_TYPE, LEADS_REQUEST_ID],{}));
-  const stages = useSelector(state => get(state.serverSide, [STAGE_TYPE],{}));
-
   const dispatch = useDispatch();
+
+  const leads = useSelector(state => {
+    return Object.values(
+      get(state.serverSide, [LEAD_TYPE, LEADS_REQUEST_ID], {})
+    )
+  });
+
+  const openLeads = leads.reduce((acc, current) => {
+    return {
+      ...acc,
+      [current.id]: false,
+    }
+  }, {});
+
+  const [open, setOpen] = React.useState(openLeads);
+
+  const stages = useSelector(state => {
+    return get(state.serverSide, [STAGE_TYPE], {});
+  });
 
   useEffect(() => {
     dispatch(findAll(
@@ -94,18 +108,30 @@ export const Leads = () => {
     ));
   }
 
-  const toggleListItem = (id) => {
-    setOpen({[id]: !open[id]});
-    if (open[id]) {
+  const seeMore = (id) => {
+    if (!open[id]) {
+      setOpen({
+        [id]: true,
+      });
       fetchStages(id);
+    } else {
+      setOpen({
+        [id]: false,
+      });
     }
   };
 
+  const getStages = (lead_id) => {
+    return Object.values(
+      get(stages, [lead_id], {})
+    )
+  }
+
   return (
     <>
-      {Object.values(leads).map(({id: lead_id, company_name, position, status, description }) => {
+      {leads.map(({id: lead_id, company_name, position, status, description }) => {
         return (
-          <Card key={lead_id} className={classes.root}>
+          <Card key={lead_id} className={classes.root} variant="outlined">
             <CardHeader
               avatar={
                 <Avatar
@@ -137,7 +163,7 @@ export const Leads = () => {
                 <ShareIcon />
               </IconButton>
               <IconButton
-                onClick={() => toggleListItem(lead_id)}
+                onClick={() => seeMore(lead_id)}
                 aria-expanded={open[lead_id]}
                 aria-label="show more"
               >
@@ -146,14 +172,12 @@ export const Leads = () => {
             </CardActions>
             <Collapse in={open[lead_id]} timeout="auto" unmountOnExit>
               <Timeline align="alternate">
-                {Object.values(get(stages, [lead_id], {})).map(
+                {getStages(lead_id).map(
                   ({ id: stage_id, state, title, notes }, index) => {
                     return (
                       <TimelineItem key={`lead-${lead_id}-stage-${stage_id}`}>
                         <TimelineOppositeContent>
-                          <Typography variant="body2" color="textPrimary">
-                            {STATES[state]}
-                          </Typography>
+                          <Chip label={STATES[state]} color="secondary"/>
                         </TimelineOppositeContent>
                         <TimelineSeparator>
                           <TimelineDot color="primary" />
