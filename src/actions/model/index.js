@@ -41,8 +41,6 @@ export const reducer = (state = {}, { type, payload = {} }) => {
       },
     };
   case MODEL_UPDATE:
-    // debugger
-    console.log(payload);
     return {
       [modelType]: {
         [requestId]: {

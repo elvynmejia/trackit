@@ -90,24 +90,32 @@ export const Leads = () => {
     ));
   }
 
-  const seeMore = (id) => {
-    if (!collapseSeeMore[id]) {
+  const seeMore = (lead_id) => {
+    if (!collapseSeeMore[lead_id]) {
       collapseSeeMoreToggle({
-        [id]: true,
+        [lead_id]: true,
       });
-      fetchStages(id);
+
+      // close add stage
+      addStageToggle({
+        [lead_id]: false,
+      });
+
+      fetchStages(lead_id);
     } else {
       collapseSeeMoreToggle({
-        [id]: false,
+        [lead_id]: false,
       });
     }
   };
 
   const addStage = (lead_id) => {
-    // debugger
-    console.log(collapseAddStage)
     addStageToggle({
       [lead_id]: !collapseAddStage[lead_id]
+    });
+    // close see more
+    collapseSeeMoreToggle({
+      [lead_id]: false,
     });
   }
 
