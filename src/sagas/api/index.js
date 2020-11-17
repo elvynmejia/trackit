@@ -35,11 +35,11 @@ function* find(action) {
 
     const normalizedData = normalize(Object.values(data)[0], leads);
 
-    yield put(apiReceive(
+    yield put(apiReceive({
       modelType,
-      normalizedData.entities,
+      responseData: normalizedData.entities,
       requestId,
-    ));
+    }));
 
     yield put(apiSuccess({
       modelType,
@@ -71,11 +71,11 @@ function* findAll(action) {
 
     const normalizedData = normalize(Object.values(data)[0], [leads]);
 
-    yield put(apiReceive(
+    yield put(apiReceive({
       modelType,
-      normalizedData.entities,
+      responseData: normalizedData.entities,
       requestId,
-    ));
+    }));
 
     yield put(apiSuccess({
       modelType,

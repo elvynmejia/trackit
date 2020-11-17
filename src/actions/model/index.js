@@ -6,7 +6,7 @@ import { get } from 'lodash';
 const getRequestId = () => uuid();
 
 export const MODEL_CREATE = 'model/create';
-export const modelCreate = (modelType, payload = {}) => ({
+export const modelCreate = ({ modelType, payload = {} } = {}) => ({
   type: MODEL_CREATE,
   payload: {
     modelType,

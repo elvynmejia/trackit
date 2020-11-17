@@ -75,19 +75,22 @@ export const Leads = () => {
   const [collapseAddStage, addStageToggle] = React.useState(openLeads);
 
   useEffect(() => {
-    dispatch(findAll(
-      LEAD_TYPE,
-      {},
-      LEADS_REQUEST_ID
-    ))
+    dispatch(
+      findAll({
+        modelType: LEAD_TYPE,
+        requestId: LEADS_REQUEST_ID
+      })
+    )
   }, [dispatch]);
 
   const fetchStages = (lead_id) => {
-    dispatch(findAll(
-      STAGE_TYPE,
-      { lead_id },
-      lead_id
-    ));
+    dispatch(
+      findAll({
+        modelType: STAGE_TYPE,
+        query: { lead_id },
+        requestId: lead_id
+      })
+    );
   }
 
   const seeMore = (lead_id) => {

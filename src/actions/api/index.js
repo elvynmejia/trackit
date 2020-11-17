@@ -4,7 +4,7 @@ import { get } from 'lodash';
 const getRequestId = () => uuid();
 
 export const API_RECEIVE = 'api/receive';
-export const apiReceive = (modelType, responseData = {}, requestId) => ({
+export const apiReceive = ({ modelType, responseData = {}, requestId } = {}) => ({
   type: API_RECEIVE,
   payload: {
     modelType,
@@ -13,8 +13,9 @@ export const apiReceive = (modelType, responseData = {}, requestId) => ({
   },
 });
 
+// findbyId
 export const API_FIND = 'api/find';
-export const find = (modelType, id, query = {}, requestId = getRequestId()) => ({
+export const find = ({ modelType, id, query = {}, requestId = getRequestId() } = {}) => ({
   type: API_FIND,
   payload: {
     modelType,
@@ -25,7 +26,7 @@ export const find = (modelType, id, query = {}, requestId = getRequestId()) => (
 });
 
 export const API_FIND_ALL = 'api/find_all';
-export const findAll = (modelType, query = {}, requestId = getRequestId()) => ({
+export const findAll = ({ modelType, query = {}, requestId = getRequestId() } = {}) => ({
   type: API_FIND_ALL,
   payload: {
     modelType,
@@ -35,7 +36,7 @@ export const findAll = (modelType, query = {}, requestId = getRequestId()) => ({
 });
 
 export const API_CREATE = 'ap i/create';
-export const apiCreate = (modelType, data, requestId = getRequestId()) => ({
+export const apiCreate = ({ modelType, data, requestId = getRequestId() } = {}) => ({
   type: API_CREATE,
   payload: {
     modelType,
@@ -45,7 +46,7 @@ export const apiCreate = (modelType, data, requestId = getRequestId()) => ({
 });
 
 export const API_UPDATE = 'api/update';
-export const apiUpdate = (modelType, data, requestId = getRequestId()) => ({
+export const apiUpdate = ({ modelType, data, requestId = getRequestId() } = {}) => ({
   type: API_UPDATE,
   payload: {
     modelType,
