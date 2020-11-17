@@ -6,48 +6,33 @@ import { makeStyles } from '@material-ui/core/styles';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-
 import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
-import ExpandLess from '@material-ui/icons/ExpandLess';
 
-import Chip from '@material-ui/core/Chip';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
-// import CardContent from '@material-ui/core/CardContent';
-// import CardActions from '@material-ui/core/CardActions';
-// import Collapse from '@material-ui/core/Collapse';
+import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-// import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
+import IconButton from '@material-ui/core/IconButton';
+
+import AddIcon from '@material-ui/icons/Add';
+import ExpandLess from '@material-ui/icons/ExpandLess';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import BusinessIcon from '@material-ui/icons/Business';
 
-
-// abtstract this
-import Timeline from '@material-ui/lab/Timeline';
-import TimelineItem from '@material-ui/lab/TimelineItem';
-import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
-import TimelineConnector from '@material-ui/lab/TimelineConnector';
-import TimelineContent from '@material-ui/lab/TimelineContent';
-import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
-import TimelineDot from '@material-ui/lab/TimelineDot';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-// abstract this
-
-
 import { findAll } from 'actions/api';
 import { TYPE as LEAD_TYPE} from 'models/lead';
 import { TYPE as STAGE_TYPE} from 'models/stage';
 import { STATES } from 'constants/index';
+
+import SeeMore from './see_more'
+import AddStageForm from './add_stage'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,11 +71,8 @@ export const Leads = () => {
     }
   }, {});
 
-  const [open, setOpen] = React.useState(openLeads);
-
-  const stages = useSelector(state => {
-    return get(state.serverSide, [STAGE_TYPE], {});
-  });
+  const [collapseSeeMore, collapseSeeMoreToggle] = React.useState(openLeads);
+  const [collapseAddStage, addStageToggle] = React.useState(openLeads);
 
   useEffect(() => {
     dispatch(findAll(
@@ -109,22 +91,24 @@ export const Leads = () => {
   }
 
   const seeMore = (id) => {
-    if (!open[id]) {
-      setOpen({
+    if (!collapseSeeMore[id]) {
+      collapseSeeMoreToggle({
         [id]: true,
       });
       fetchStages(id);
     } else {
-      setOpen({
+      collapseSeeMoreToggle({
         [id]: false,
       });
     }
   };
 
-  const getStages = (lead_id) => {
-    return Object.values(
-      get(stages, [lead_id], {})
-    )
+  const addStage = (lead_id) => {
+    // debugger
+    console.log(collapseAddStage)
+    addStageToggle({
+      [lead_id]: !collapseAddStage[lead_id]
+    });
   }
 
   return (
@@ -156,49 +140,23 @@ export const Leads = () => {
               </Typography>
             </CardContent>
             <CardActions disableSpacing>
-              <IconButton aria-label="add to favorites">
-                <FavoriteIcon />
-              </IconButton>
-              <IconButton aria-label="share">
-                <ShareIcon />
+              <IconButton
+                onClick={() => addStage(lead_id)}
+                aria-expanded={collapseAddStage[lead_id]}
+                aria-label="add stage"
+              >
+                <AddIcon />
               </IconButton>
               <IconButton
                 onClick={() => seeMore(lead_id)}
-                aria-expanded={open[lead_id]}
+                aria-expanded={collapseSeeMore[lead_id]}
                 aria-label="show more"
               >
-                {open[lead_id] ? <ExpandLess /> : <ExpandMore />}
+                {collapseSeeMore[lead_id] ? <ExpandLess /> : <ExpandMore />}
               </IconButton>
             </CardActions>
-            <Collapse in={open[lead_id]} timeout="auto" unmountOnExit>
-              <Timeline align="alternate">
-                {getStages(lead_id).map(
-                  ({ id: stage_id, state, title, notes }, index) => {
-                    return (
-                      <TimelineItem key={`lead-${lead_id}-stage-${stage_id}`}>
-                        <TimelineOppositeContent>
-                          <Chip label={STATES[state]} color="secondary"/>
-                        </TimelineOppositeContent>
-                        <TimelineSeparator>
-                          <TimelineDot color="primary" />
-                          <TimelineConnector />
-                        </TimelineSeparator>
-                        <TimelineContent>
-                          <Paper elevation={3} className={classes.paper}>
-                            <Typography variant="h6" component="h1">
-                              {title}
-                            </Typography>
-                            <Typography>
-                              {notes}
-                            </Typography>
-                          </Paper>
-                        </TimelineContent>
-                      </TimelineItem>
-                    );
-                  }
-                )}
-              </Timeline>
-            </Collapse>
+            <SeeMore open={collapseSeeMore[lead_id]} lead_id={lead_id} />
+            <AddStageForm open={collapseAddStage[lead_id]} lead_id={lead_id} />
           </Card>
         )
       })}
