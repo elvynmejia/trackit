@@ -1,13 +1,9 @@
 import React, { useEffect }from 'react';
-import { get } from 'lodash';
-import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Collapse from '@material-ui/core/Collapse';
-import TextField from '@material-ui/core/TextField';
 
-import { modelUpdate } from 'actions/model';
-import { TYPE } from 'models/stage';
+import { BoundInput } from 'components/shared/bound_input';
 // title str,
 // links str
 // description str
@@ -28,54 +24,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-const REQUEST_ID = 'components/add-stage';
+const requestId = (id) => `components/add-stage/${id}`;
 
 export const AddStage = ({ lead_id, open }) => {
-  const dispatch = useDispatch();
-
-  const title = useSelector(state => get(
-    state, ['clientSide', TYPE, REQUEST_ID, 'title'], '')
-  );
-
-  const onChange = ({ target }) => {
-    const { name, value } = target;
-    dispatch(
-      modelUpdate({
-        modelType: TYPE,
-        name,
-        value,
-        requestId: REQUEST_ID,
-      })
-    );
-  }
+  const boundToStoreInputProps = {
+    modelType: TYPE,
+    requestId: requestId(lead_id),
+  };
 
   const classes = useStyles();
   return (
     <Collapse in={open} timeout="auto" unmountOnExit>
       <form noValidate autoComplete="off">
-        <TextField
+        <BoundInput
           name="title"
           label="Title"
           margin="normal"
           className={classes.textField}
-          onChange={onChange}
-          value={title}
           fullWidth
+          {...boundToStoreInputProps}
         />
-        <TextField
+        <BoundInput
           name="links"
-        	label="links"
-        	className={classes.textField}
-        	fullWidth
-          onChange={onChange}
+          label="links"
+          className={classes.textField}
+          fullWidth
+          {...boundToStoreInputProps}
         />
-        <TextField
+        <BoundInput
           name="description"
           label="Description"
           className={classes.textField}
-          onChange={onChange}
           fullWidth
+          {...boundToStoreInputProps}
         />
       </form>
     </Collapse>
