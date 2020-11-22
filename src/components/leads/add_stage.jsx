@@ -1,7 +1,9 @@
-import React, { useEffect }from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Collapse from '@material-ui/core/Collapse';
+
+import { TYPE } from 'models/stage';
 
 import { BoundInput } from 'components/shared/bound_input';
 // title str,
@@ -30,6 +32,7 @@ export const AddStage = ({ lead_id, open }) => {
   const boundToStoreInputProps = {
     modelType: TYPE,
     requestId: requestId(lead_id),
+    type: 'text',
   };
 
   const classes = useStyles();
@@ -37,26 +40,34 @@ export const AddStage = ({ lead_id, open }) => {
     <Collapse in={open} timeout="auto" unmountOnExit>
       <form noValidate autoComplete="off">
         <BoundInput
+          {...boundToStoreInputProps}
           name="title"
           label="Title"
           margin="normal"
           className={classes.textField}
           fullWidth
-          {...boundToStoreInputProps}
         />
         <BoundInput
+          {...boundToStoreInputProps}
           name="links"
           label="links"
           className={classes.textField}
           fullWidth
-          {...boundToStoreInputProps}
         />
         <BoundInput
+          {...boundToStoreInputProps}
           name="description"
           label="Description"
           className={classes.textField}
           fullWidth
+        />
+        <BoundInput
           {...boundToStoreInputProps}
+          name="Start datetime"
+          label="Description"
+          className={classes.textField}
+          fullWidth
+          type="datetime"
         />
       </form>
     </Collapse>

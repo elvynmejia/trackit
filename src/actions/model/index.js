@@ -1,7 +1,4 @@
-// We should be able to differentiate between client vs server data
-// models is clearly client side data
 import { uuid } from 'uuidv4';
-import { get } from 'lodash';
 
 const getRequestId = () => uuid();
 

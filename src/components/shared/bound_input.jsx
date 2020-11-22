@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 
 import { modelUpdate } from 'actions/model';
 
-export const BoundInput = ({ modelType, requestId, name: property, ...rest}) => {
+export const BoundInput = ({ modelType, requestId, name: property, type, ...rest}) => {
   const dispatch = useDispatch();
 
   const propertyValue = useSelector(state => get(
@@ -26,6 +26,14 @@ export const BoundInput = ({ modelType, requestId, name: property, ...rest}) => 
     );
   }
 
+  if (type === 'datetime') {
+    return <p>a datetime input</p>
+  } else if (type === 'date') {
+    return <p>date only</p>
+  } else if (type === 'time') {
+    return <p>time only</p>
+  }
+
   return (
     <TextField
       value={propertyValue}
@@ -38,9 +46,10 @@ export const BoundInput = ({ modelType, requestId, name: property, ...rest}) => 
 }
 
 BoundInput.propTypes = {
+  requestId: T.string,
   name: T.string.isRequired,
   modelType: T.string.isRequired,
-  requestId: T.string,
+  type: T.string.isRequired,
 };
 
 export default BoundInput;
