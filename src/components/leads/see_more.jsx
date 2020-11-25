@@ -1,7 +1,7 @@
-import React, { useEffect }from 'react';
+import React from 'react';
 import { get } from 'lodash';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Collapse from '@material-ui/core/Collapse';
