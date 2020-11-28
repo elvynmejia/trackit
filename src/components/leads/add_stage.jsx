@@ -62,13 +62,21 @@ export const AddStage = ({ lead_id, open }) => {
           fullWidth
         />
         <BoundInput
-          modelType={TYPE}
-          requestId={requestId(lead_id)}
-          name="start_at"
-          label="starts at"
+          {...boundToStoreInputProps}
+          name="start_at_date"
+          label="Starts at date"
           className={classes.textField}
           fullWidth
           type="date"
+        />
+        <BoundInput
+          {...boundToStoreInputProps}
+          margin="normal"
+          name="start_at_time"
+          label="Starts at time"
+          className={classes.textField}
+          fullWidth
+          type="time"
         />
       </form>
     </Collapse>
