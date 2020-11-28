@@ -36,7 +36,7 @@ export const findAll = ({ modelType, query = {}, requestId = getRequestId() } = 
 });
 
 export const API_CREATE = 'ap i/create';
-export const apiCreate = ({ modelType, data, requestId = getRequestId() } = {}) => ({
+export const create = ({ modelType, data, requestId = getRequestId() } = {}) => ({
   type: API_CREATE,
   payload: {
     modelType,
@@ -46,7 +46,7 @@ export const apiCreate = ({ modelType, data, requestId = getRequestId() } = {}) 
 });
 
 export const API_UPDATE = 'api/update';
-export const apiUpdate = ({ modelType, data, requestId = getRequestId() } = {}) => ({
+export const update = ({ modelType, data, requestId = getRequestId() } = {}) => ({
   type: API_UPDATE,
   payload: {
     modelType,

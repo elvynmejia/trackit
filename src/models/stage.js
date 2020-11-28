@@ -4,7 +4,7 @@ export const TYPE = 'stages';
 
 export class Stage extends Base {
   static TYPE = TYPE;
-  static url = `${this.proxyUrl}/${this.TYPE}`;
+  static url = this.TYPE;
 }
 
 export default Stage;

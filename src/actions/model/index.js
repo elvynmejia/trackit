@@ -3,11 +3,12 @@ import { uuid } from 'uuidv4';
 const getRequestId = () => uuid();
 
 export const MODEL_CREATE = 'model/create';
-export const modelCreate = ({ modelType, payload = {} } = {}) => ({
+export const modelCreate = ({ modelType, payload = {}, requestId = getRequestId() } = {}) => ({
   type: MODEL_CREATE,
   payload: {
     modelType,
     payload,
+    requestId
   },
 });
 
@@ -34,7 +35,9 @@ export const reducer = (state = {}, { type, payload = {} }) => {
   case MODEL_CREATE:
     return {
       [modelType]: {
-        message: `Creating this new model ${modelType}`,
+        [requestId]: {
+          ...payload.payload
+        },
       },
     };
   case MODEL_UPDATE:

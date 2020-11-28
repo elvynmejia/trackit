@@ -1,9 +1,10 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, put, takeEvery, select } from 'redux-saga/effects'
 import { normalize, schema } from 'normalizr';
 
 import { modelTypeToModelMap } from 'models/map';
 import {
   API_FIND,
+  API_CREATE,
   API_FIND_ALL,
   apiReceive,
 } from 'actions/api';
@@ -31,9 +32,9 @@ function* find(action) {
   try {
     const { data, status } = yield call(modelClass.find.bind(modelClass), id, query);
 
-    const leads = new schema.Entity(modelType);
+    const entity = new schema.Entity(modelType);
 
-    const normalizedData = normalize(Object.values(data)[0], leads);
+    const normalizedData = normalize(Object.values(data)[0], entity);
 
     yield put(apiReceive({
       modelType,
@@ -47,7 +48,7 @@ function* find(action) {
       requestId,
     }));
   } catch (e) {
-    const { status, data } = e.response;
+    const { status, data } = e?.response;
     const { message } = data;
     yield put(apiError({
       modelType,
@@ -67,9 +68,9 @@ function* findAll(action) {
   try {
     const { data, status } = yield call(modelClass.findAll.bind(modelClass), query);
 
-    const leads = new schema.Entity(modelType);
+    const entity = new schema.Entity(modelType);
 
-    const normalizedData = normalize(Object.values(data)[0], [leads]);
+    const normalizedData = normalize(Object.values(data)[0], [entity]);
 
     yield put(apiReceive({
       modelType,
@@ -83,7 +84,7 @@ function* findAll(action) {
       requestId,
     }));
   } catch (e) {
-    const { status, data } = e.response;
+    const { status, data } = e?.response;
     const { message } = data;
     yield put(apiError({
       modelType,
@@ -96,9 +97,48 @@ function* findAll(action) {
 
 }
 
+function* create(action) {
+  const { modelType, requestId } = action.payload;
+
+  const body = yield select(state => state.clientSide[modelType]?.[requestId] || {})
+
+  const modelClass = getModelClass(modelType);
+
+  try {
+    const { data, status } = yield call(modelClass.create.bind(modelClass), body);
+
+    const entity = new schema.Entity(modelType);
+
+    const normalizedData = normalize(Object.values(data)[0], entity);
+
+    yield put(apiReceive({
+      modelType,
+      responseData: normalizedData.entities,
+      requestId,
+    }));
+
+    yield put(apiSuccess({
+      modelType,
+      status,
+      requestId,
+    }));
+  } catch (e) {
+    const { status, data } = e?.response;
+    const { message } = data;
+    yield put(apiError({
+      modelType,
+      status,
+      requestId,
+      message,
+      ...data,
+    }));
+  }
+}
+
 function* apiSagas() {
   yield takeEvery(API_FIND, find);
   yield takeEvery(API_FIND_ALL, findAll);
+  yield takeEvery(API_CREATE, create)
 }
 
 export default apiSagas;
