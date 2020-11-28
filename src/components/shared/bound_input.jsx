@@ -1,5 +1,4 @@
 import React from 'react';
-import { get } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 
@@ -12,9 +11,9 @@ import { modelUpdate } from 'actions/model';
 export const BoundInput = ({ modelType, requestId, name: property, type, ...rest}) => {
   const dispatch = useDispatch();
 
-  let propertyValue = useSelector(state => get(
-    state, ['clientSide', modelType, requestId, property], '')
-  );
+  let propertyValue = useSelector(state => (
+    state?.clientSide?.[modelType]?.[requestId]?.[property] || ''
+  ));
 
   if (type === 'date' || type === 'time') {
     if (!propertyValue) {
@@ -33,7 +32,7 @@ export const BoundInput = ({ modelType, requestId, name: property, type, ...rest
       })
     );
   }
-  
+
   if (type === 'date') {
     return (
       <KeyboardDatePicker

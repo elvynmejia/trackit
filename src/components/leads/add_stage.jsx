@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch } from 'react-redux';
 
 import Collapse from '@material-ui/core/Collapse';
+import Button from '@material-ui/core/Button';
+
+import { modelCreate } from 'actions/model';
+import { create } from 'actions/api';
+
 
 import { TYPE } from 'models/stage';
 
@@ -26,16 +32,40 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const requestId = (id) => `components/add-stage/${id}`;
+const getRequestId = (id) => `components/add-stage/${id}`;
 
 export const AddStage = ({ lead_id, open }) => {
+  const classes = useStyles();
+
+  const dispatch = useDispatch();
+  const requestId = getRequestId(lead_id);
+
+  useEffect(() => {
+    dispatch(modelCreate({
+      modelType: TYPE,
+      requestId,
+      payload: {
+        state: 'phone_screen',
+        lead_id,
+        start_at: new Date().toIsso,
+        end_at: new Date()
+      },
+    }));
+  }, []);
+
   const boundToStoreInputProps = {
     modelType: TYPE,
-    requestId: requestId(lead_id),
+    requestId,
     type: 'text',
   };
 
-  const classes = useStyles();
+  const submit = () => {
+    dispatch(create({
+      modelType: TYPE,
+      requestId,
+    }));
+  }
+
   return (
     <Collapse in={open} timeout="auto" unmountOnExit>
       <form noValidate autoComplete="off">
@@ -60,6 +90,17 @@ export const AddStage = ({ lead_id, open }) => {
           label="Description"
           className={classes.textField}
           fullWidth
+          multiline
+          rows={4}
+        />
+        <BoundInput
+          {...boundToStoreInputProps}
+          name="notes"
+          label="Notes"
+          className={classes.textField}
+          fullWidth
+          multiline
+          rows={4}
         />
         <BoundInput
           {...boundToStoreInputProps}
@@ -78,6 +119,30 @@ export const AddStage = ({ lead_id, open }) => {
           fullWidth
           type="time"
         />
+        <BoundInput
+          {...boundToStoreInputProps}
+          name="end_at_date"
+          label="Ends at date"
+          className={classes.textField}
+          fullWidth
+          type="date"
+        />
+        <BoundInput
+          {...boundToStoreInputProps}
+          margin="normal"
+          name="end_at_time"
+          label="Ends at time"
+          className={classes.textField}
+          fullWidth
+          type="time"
+        />
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={submit}
+        >
+          Save
+        </Button>
       </form>
     </Collapse>
   );
