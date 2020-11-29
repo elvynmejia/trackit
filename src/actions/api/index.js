@@ -62,6 +62,7 @@ export const reducer = (state = {}, { type, payload = {} }) => {
     return {
       ...state,
       [modelType]: {
+        ...(state?.[modelType]),
         [requestId]: {
           ...(get(state, [modelType, requestId], {})),
           ...responseData[modelType],

@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 
+
 import AddIcon from '@material-ui/icons/Add';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
@@ -20,10 +21,10 @@ import BusinessIcon from '@material-ui/icons/Business';
 
 import { findAll } from 'actions/api';
 import { TYPE as LEAD_TYPE} from 'models/lead';
-import { TYPE as STAGE_TYPE} from 'models/stage';
 
 import SeeMore from './see_more'
 import AddStageForm from './add_stage'
+import StageDiagram from './stage_diagram';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,6 +55,16 @@ export const Leads = () => {
       get(state.serverSide, [LEAD_TYPE, LEADS_REQUEST_ID], {})
     )
   });
+  const fetchStages = () => {}
+  // const stages = useSelector(state => {
+  //   return get(state.serverSide, [STAGE_TYPE], {});
+  // });
+
+  // const getStages = (lead_id) => {
+  //   return Object.values(
+  //     get(stages, [lead_id], {})
+  //   )
+  // }
 
   const openLeads = leads.reduce((acc, current) => {
     return {
@@ -73,16 +84,6 @@ export const Leads = () => {
       })
     )
   }, [dispatch]);
-
-  const fetchStages = (lead_id) => {
-    dispatch(
-      findAll({
-        modelType: STAGE_TYPE,
-        query: { lead_id },
-        requestId: lead_id
-      })
-    );
-  }
 
   const seeMore = (lead_id) => {
     if (!collapseSeeMore[lead_id]) {
@@ -138,8 +139,14 @@ export const Leads = () => {
             />
             <CardContent>
               <Typography variant="body2" color="textSecondary" component="p">
-                {position}
+                {position || 'no position specified'}
               </Typography>
+              <div style={{ height: '5.5rem' }}>
+                <StageDiagram
+                  key={lead_id}
+                  lead_id={lead_id}
+                />
+              </div>
             </CardContent>
             <CardActions disableSpacing>
               <IconButton
