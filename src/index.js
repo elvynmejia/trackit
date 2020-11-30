@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'beautiful-react-diagrams/styles.css';
 import './index.css';
 import App from './App';
-import 'beautiful-react-diagrams/styles.css';
 
 import reportWebVitals from './reportWebVitals';
 

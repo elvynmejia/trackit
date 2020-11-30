@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
 
+import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -41,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
   },
   secondaryTail: {
     backgroundColor: theme.palette.secondary.main,
+  },
+  box: {
+    height: theme.spacing(20),
   },
 }));
 
@@ -141,12 +145,12 @@ export const Leads = () => {
               <Typography variant="body2" color="textSecondary" component="p">
                 {position || 'no position specified'}
               </Typography>
-              <div style={{ height: '5.5rem' }}>
+              <Box className={classes.box}>
                 <StageDiagram
                   key={lead_id}
                   lead_id={lead_id}
                 />
-              </div>
+              </Box>
             </CardContent>
             <CardActions disableSpacing>
               <IconButton
