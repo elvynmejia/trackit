@@ -5,6 +5,7 @@ import Diagram, {
   createSchema,
 } from 'beautiful-react-diagrams';
 
+import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 
 import purple from '@material-ui/core/colors/purple';
@@ -52,6 +53,20 @@ const useStyles = makeStyles((theme) => ({
   '7': {
     background: green[500],
   },
+  diagram: {
+    // display: 'flex',
+    // flexDirection: 'column',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+  },
+  box: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: theme.spacing(20),
+    backgroundColor: 'none !important',
+    background: 'none !important',
+  }
 }));
 
 const StageDiagram = ({ lead_id }) => {
@@ -123,11 +138,15 @@ const StageDiagram = ({ lead_id }) => {
   });
 
   return (
-    <Diagram
-      key={lead_id}
-      schema={schema}
-      onChange={() => console.log('schema')}
-    />
+    <Box className={classes.box}>
+      <Diagram
+        className={classes.diagram}
+        style={{ backgroundColor: 'none !important' }}
+        key={lead_id}
+        schema={schema}
+        onChange={() => console.log('schema')}
+      />
+    </Box>
   )
 }
 
