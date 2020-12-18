@@ -30,6 +30,11 @@ import SeeMore from './see_more'
 
 import { MODAL_ID } from './index';
 
+const KEY = 'component/leads/journey';
+
+export const generateModalId = ({ stageId, leadId }) => (
+  `${KEY}-lead-${leadId}-stage-${stageId}`
+);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,14 +72,27 @@ export const Journey = ({ lead_id }) => {
         connector={<CustomStepConnector />}
       >
         {stages.map(({ id, title }) => {
+          const modalId = generateModalId({
+            stageId: id,
+            leadId: lead_id,
+          });
+
           return (
             <Step key={id}>
               <StepLabel
                 StepIconComponent={(props) => (
-                  <StepIcon {...props} />
+                  <StepIcon
+                    {...props}
+                    leadId={lead_id}
+                    stageId={id}
+                  />
                 )}
               >
                 {title}
+                <SeeMore
+                  stageId={id}
+                  modalId={modalId}
+                />
               </StepLabel>
             </Step>
           )
@@ -142,14 +160,21 @@ const useStepIconStyles = makeStyles({
   },
 });
 
-const StepIcon = ({ icon: step}) => {
+const StepIcon = ({ icon: step, ...rest }) => {
   const classes = useStepIconStyles();
+  const dispatch = useDispatch();
+  const modalId = generateModalId({
+    ...rest,
+  });
+
   return (
     <div
       className={
-        clsx(classes.root, { [classes[step]]: true, active: true })
+        clsx(classes.root, { [classes[step]]: true })
       }
-      onClick={() => console.log(`step ${step}`)}
+      onClick={() => {
+        dispatch(openModal(modalId));
+      }}
     >
       {step}
     </div>
@@ -160,6 +185,8 @@ StepIcon.propTypes = {
   active: PropTypes.bool,
   completed: PropTypes.bool,
   icon: PropTypes.node,
+  leadId: PropTypes.integer.isRequired,
+  stageId: PropTypes.integer.isRequired,
 };
 
 export default Journey;
