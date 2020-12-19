@@ -20,44 +20,24 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import BusinessIcon from '@material-ui/icons/Business';
 
 import { findAll } from 'actions/api';
-import { TYPE as LEAD_TYPE} from 'models/lead';
+import { openModal } from 'actions/interfaces';
 
-import SeeMore from './see_more'
-import AddStageForm from './add_stage'
-import StageDiagram from './stage_diagram';
+import { TYPE as LEAD_TYPE } from 'models/lead';
+
+import AddStageForm from './add_stage';
+import { Journey } from './journey';
+
+import { KEY, MODAL_ID } from './index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    // maxWidth: 500,
     backgroundColor: theme.palette.background.paper,
     margin: '10px 3px',
   },
-  nested: {
-    // paddingLeft: theme.spacing(4),
-  },
-  paper: {
-    padding: '6px 16px',
-  },
-  secondaryTail: {
-    backgroundColor: theme.palette.secondary.main,
-  },
-  box: {
-    height: theme.spacing(20),
-    // boxSizing: 'border-box',
-    // width: '100%',
-    // height: '100%',
-    // /* border: .07rem solid #dae1e7; */
-    // /* border-radius: .25rem; */
-    // /* box-shadow: 0 0.8rem 1rem -0.2rem rgba(0,0,0,.1), 0 0.25rem 0.5rem -0.02rem rgba(0,0,0,.05); */
-    // minHeight: '100',
-    // backgroundColor: 'red',
-    // position: 'relative',
-    // overflow: 'hidden',
-  },
 }));
 
-const LEADS_REQUEST_ID = 'components/leads-request';
+export const LEADS_REQUEST_ID = `${KEY}/request`;
 
 export const Leads = () => {
   const classes = useStyles();
@@ -68,16 +48,6 @@ export const Leads = () => {
       get(state.serverSide, [LEAD_TYPE, LEADS_REQUEST_ID], {})
     )
   });
-  const fetchStages = () => {}
-  // const stages = useSelector(state => {
-  //   return get(state.serverSide, [STAGE_TYPE], {});
-  // });
-
-  // const getStages = (lead_id) => {
-  //   return Object.values(
-  //     get(stages, [lead_id], {})
-  //   )
-  // }
 
   const openLeads = leads.reduce((acc, current) => {
     return {
@@ -99,22 +69,9 @@ export const Leads = () => {
   }, [dispatch]);
 
   const seeMore = (lead_id) => {
-    if (!collapseSeeMore[lead_id]) {
-      collapseSeeMoreToggle({
-        [lead_id]: true,
-      });
-
-      // close add stage
-      addStageToggle({
-        [lead_id]: false,
-      });
-
-      fetchStages(lead_id);
-    } else {
-      collapseSeeMoreToggle({
-        [lead_id]: false,
-      });
-    }
+    dispatch(
+      openModal(MODAL_ID)
+    );
   };
 
   const addStage = (lead_id) => {
@@ -154,10 +111,7 @@ export const Leads = () => {
               <Typography variant="body2" color="textSecondary" component="p">
                 {position || 'no position specified'}
               </Typography>
-              <StageDiagram
-                key={lead_id}
-                lead_id={lead_id}
-              />
+              <Journey lead_id={lead_id} />
             </CardContent>
             <CardActions disableSpacing>
               <IconButton
@@ -175,7 +129,6 @@ export const Leads = () => {
                 {collapseSeeMore[lead_id] ? <ExpandLess /> : <ExpandMore />}
               </IconButton>
             </CardActions>
-            <SeeMore open={collapseSeeMore[lead_id]} lead_id={lead_id} />
             <AddStageForm open={collapseAddStage[lead_id]} lead_id={lead_id} />
           </Card>
         )
