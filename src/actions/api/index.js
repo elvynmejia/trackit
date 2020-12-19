@@ -3,6 +3,8 @@ import { get } from 'lodash';
 
 const getRequestId = () => uuid();
 
+const uniqueRecordId = () => uuid();
+
 export const API_RECEIVE = 'api/receive';
 export const apiReceive = ({ modelType, responseData = {}, requestId } = {}) => ({
   type: API_RECEIVE,
@@ -67,6 +69,14 @@ export const reducer = (state = {}, { type, payload = {} }) => {
           ...(get(state, [modelType, requestId], {})),
           ...responseData[modelType],
         },
+        ...Object.values(
+          responseData?.[modelType] || {}
+        ).reduce((acc, data) => ({
+          ...acc,
+          [uniqueRecordId()]: {
+            ...data,
+          },
+        }), {}),
       },
     };
   default:
