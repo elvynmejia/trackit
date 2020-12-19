@@ -4,6 +4,8 @@ import createSagaMiddleware from 'redux-saga'
 import { reducer as serverSide } from './actions/api';
 import { reducer as clientSide } from './actions/model';
 import { reducer as requests } from './actions/requests';
+import { reducer as interfaces } from './actions/interfaces';
+
 
 import apiSagas from './sagas/api';
 
@@ -18,6 +20,7 @@ const store = createStore(
     serverSide,
     clientSide,
     requests,
+    interfaces,
   }),
   {},
   compose(
