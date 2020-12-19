@@ -26,7 +26,7 @@ import { findAll } from 'actions/api';
 import { TYPE as STAGE_TYPE} from 'models/stage';
 import { openModal } from 'actions/interfaces';
 
-import SeeMore from './see_more'
+import StageDetails from './stage_details'
 
 import { MODAL_ID } from './index';
 
@@ -89,7 +89,7 @@ export const Journey = ({ lead_id }) => {
                 )}
               >
                 {title}
-                <SeeMore
+                <StageDetails
                   stageId={id}
                   modalId={modalId}
                 />
@@ -138,7 +138,7 @@ const useStepIconStyles = makeStyles({
     alignItems: 'center',
   },
   '1': {
-    background: purple[500],
+    background: green[500],
   },
   '2': {
     background: red[500],
@@ -182,11 +182,7 @@ const StepIcon = ({ icon: step, ...rest }) => {
 }
 
 StepIcon.propTypes = {
-  active: PropTypes.bool,
-  completed: PropTypes.bool,
   icon: PropTypes.node,
-  leadId: PropTypes.integer.isRequired,
-  stageId: PropTypes.integer.isRequired,
 };
 
 export default Journey;
