@@ -2,7 +2,11 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 
-import { KeyboardTimePicker, KeyboardDatePicker } from '@material-ui/pickers';
+import {
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+  DateTimePicker,
+} from '@material-ui/pickers';
 
 import TextField from '@material-ui/core/TextField';
 
@@ -15,7 +19,8 @@ export const BoundInput = ({ modelType, requestId, name: property, type, ...rest
     state?.clientSide?.[modelType]?.[requestId]?.[property] || ''
   ));
 
-  if (type === 'date' || type === 'time') {
+  // should have a default value
+  if (type === 'date' || type === 'time' || type === 'datetime') {
     if (!propertyValue) {
       propertyValue = new Date();
     }
@@ -45,6 +50,15 @@ export const BoundInput = ({ modelType, requestId, name: property, type, ...rest
   } else if (type === 'time') {
     return (
       <KeyboardTimePicker
+        value={propertyValue}
+        onChange={(v) => onChange({ target: { name: property, value: v }})}
+        name={property}
+        {...rest}
+      />
+    )
+  } else if (type === 'datime') {
+    return (
+      <DateTimePicker
         value={propertyValue}
         onChange={(v) => onChange({ target: { name: property, value: v }})}
         name={property}
