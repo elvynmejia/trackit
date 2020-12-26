@@ -26,6 +26,11 @@ export class Base {
 	static async create(body) {
 	  return await this.client.post(this.url, { ...body });
 	}
+
+	static async update(id, body) {
+	  const url = `${this.url}/${id}`;
+	  return await this.client.patch(url, { ...body });
+	}
 }
 
 export default Base;

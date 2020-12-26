@@ -22,7 +22,7 @@ export const BoundInput = ({ modelType, requestId, name: property, type, ...rest
   // should have a default value
   if (type === 'date' || type === 'time' || type === 'datetime') {
     if (!propertyValue) {
-      propertyValue = new Date();
+      propertyValue = (new Date()).toISOString();
     }
   }
 

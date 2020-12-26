@@ -47,8 +47,8 @@ export const AddStage = ({ lead_id, open }) => {
       payload: {
         state: 'phone_screen',
         lead_id,
-        start_at: new Date().toIsso,
-        end_at: new Date()
+        start_at: (new Date()).toISOString(),
+        end_at: (new Date()).toISOString(),
       },
     }));
   }, []);

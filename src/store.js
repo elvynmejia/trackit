@@ -7,7 +7,9 @@ import { reducer as requests } from './actions/requests';
 import { reducer as interfaces } from './actions/interfaces';
 
 
-import apiSagas from './sagas/api';
+// import apiSagas from './sagas/api';
+import rootSaga from './sagas';
+
 
 export const initialState = {
   current_user: () => 'CURRENT_USER',
@@ -31,6 +33,6 @@ const store = createStore(
   )
 );
 
-sagaMiddleware.run(apiSagas);
+sagaMiddleware.run(rootSaga);
 
 export default store;

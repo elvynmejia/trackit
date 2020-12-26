@@ -6,6 +6,7 @@ import {
   API_FIND,
   API_CREATE,
   API_FIND_ALL,
+  API_UPDATE,
   apiReceive,
 } from 'actions/api';
 
@@ -94,7 +95,6 @@ function* findAll(action) {
       ...data,
     }));
   }
-
 }
 
 function* create(action) {
@@ -135,10 +135,53 @@ function* create(action) {
   }
 }
 
+function* update(action) {
+  const { id, modelType, requestId } = action.payload;
+
+  const body = yield select(state => state.clientSide[modelType]?.[requestId] || {})
+
+  const modelClass = getModelClass(modelType);
+
+  try {
+    const {
+      data,
+      status
+    } = yield call(modelClass.update.bind(modelClass), id, body);
+
+    const entity = new schema.Entity(modelType);
+
+    const normalizedData = normalize(Object.values(data)[0], entity);
+
+    yield put(apiReceive({
+      modelType,
+      responseData: normalizedData.entities,
+      requestId,
+    }));
+
+    yield put(apiSuccess({
+      modelType,
+      status,
+      requestId,
+    }));
+  } catch (e) {
+    const { status, data } = e?.response;
+    const { message } = data;
+    yield put(apiError({
+      modelType,
+      status,
+      requestId,
+      message,
+      ...data,
+    }));
+  }
+}
+
+
 function* apiSagas() {
   yield takeEvery(API_FIND, find);
   yield takeEvery(API_FIND_ALL, findAll);
-  yield takeEvery(API_CREATE, create)
+  yield takeEvery(API_CREATE, create);
+  yield takeEvery(API_UPDATE, update);
 }
 
 export default apiSagas;
