@@ -14,7 +14,8 @@ export const ToastMessage = (props) => {
     vertical,
     horizontal,
     id,
-    message = 'Success!!'
+    message = 'Success!!',
+    severity,
   } = props;
 
   const {
@@ -43,6 +44,7 @@ ToastMessage.defaultProps = {
   vertical: 'top',
   horizontal: 'center',
   open: false,
+  severity: 'success',
 };
 
 export default ToastMessage;

@@ -9,9 +9,11 @@ import {
 } from './modal';
 
 import {
-  OPEN_TOAST,
+  OPEN_TOAST_SUCCESS,
+  OPEN_TOAST_ERROR
   CLOSE_TOAST,
-  openToast,
+  openToastSuccess,
+  openToastError,
   closeToast,
   reducer as toast,
 } from './toast';
@@ -27,9 +29,11 @@ export {
   CLOSE_MODAL,
   openModal,
   closeModal,
-  OPEN_TOAST,
+  OPEN_TOAST_SUCCESS,
+  OPEN_TOAST_ERROR
   CLOSE_TOAST,
-  openToast,
+  openToastSuccess,
+  openToastError,
   closeToast,
   reducer,
 };

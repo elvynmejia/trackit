@@ -19,7 +19,13 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 
 import { modelCreate } from 'actions/model';
-import { closeModal, openToast } from 'actions/interfaces';
+
+import {
+  closeModal,
+  openToastSuccess,
+  openToastError,
+} from 'actions/interfaces';
+
 import { TYPE } from 'models/stage';
 import { BoundInput } from 'components/shared/bound_input';
 import { update, callApiAndWait } from 'actions/api';
@@ -72,10 +78,10 @@ export function* saveSaga({ payload } = {}) {
 
   if (response.type === API_ERROR) {
     console.log(`error => ${JSON.stringify(response)}`);
-    yield put(openToast({ message: 'Something went wrong ...'}));
+    yield put(openToastError({ message: 'Something went wrong ...'}));
   }
 
-  console.log('success');
+  yield put(openToastSuccess());
 };
 
 export function* sagas(action) {

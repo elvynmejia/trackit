@@ -1,13 +1,39 @@
-export const OPEN_TOAST = 'openToast';
+export const OPEN_TOAST_SUCCESS = 'toast/open/success';
+export const OPEN_TOAST_ERROR = 'toast/open/error';
+
 export const CLOSE_TOAST = 'closeToast';
 
-export const openToast = ({ vertical, horizontal, id, message = 'Success!!' }) => ({
-  type: OPEN_TOAST,
+export const openToastSuccess = ({
+  vertical,
+  horizontal,
+  id,
+  message = 'Success!!',
+  severity = 'success',
+}) => ({
+  type: OPEN_TOAST_SUCCESS,
   payload: {
     id,
     vertical,
     horizontal,
     message,
+    severity
+  },
+});
+
+export const openToastError = ({
+  vertical,
+  horizontal,
+  id,
+  message = 'Something went wrong. Try again!!',
+  severity = 'error',
+}) => ({
+  type: OPEN_TOAST_ERROR,
+  payload: {
+    id,
+    vertical,
+    horizontal,
+    message,
+    severity,
   },
 });
 
@@ -19,13 +45,13 @@ export const closeToast = (id) => ({
 });
 
 export const reducer = (state = {}, { type, payload = {} }) => {
-  const { id } = payload;
   switch(type) {
   case CLOSE_TOAST:
     return {
       open: false,
     };
-  case OPEN_TOAST:
+  case OPEN_TOAST_SUCCESS:
+  case OPEN_TOAST_ERROR:
     return {
       ...payload,
       open: true,
