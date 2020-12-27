@@ -20,23 +20,15 @@ export const reducer = (state = {}, { type, payload = {} }) => {
   switch(type) {
   case CLOSE_MODAL:
     return {
-      ...state,
-      modal: {
-        ...(state.modal || {}),
-        [id]: {
-          open: false,
-        }
-      }
+      [id]: {
+        open: false,
+      },
     };
   case OPEN_MODAL:
     return {
-      ...state,
-      modal: {
-        ...(state.modal || {}),
-        [id]: {
-          open: true,
-        }
-      }
+      [id]: {
+        open: true,
+      },
     };
   default:
     return state;

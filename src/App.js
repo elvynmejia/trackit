@@ -1,37 +1,22 @@
 import React from 'react';
-import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { ThemeProvider } from '@material-ui/core/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { useSelector} from 'react-redux';
 
-import cyan from '@material-ui/core/colors/cyan';
-import red from '@material-ui/core/colors/red';
-
-import store from './store';
 
 import Leads from 'components/leads/leads';
+import ToastMessage from 'components/shared/toast_message'
 
 
-const themeName = 'ontrail';
-
-const palette = {
-  primary: { main: cyan['600'], contrastText: '#FAFAFA' },
-  secondary: { main: red['500'], contrastText: '#FAFAFA' },
-};
-
-const theme = {
-  ...createMuiTheme({ palette, themeName }),
-};
-
-const App = () => {
+const App = (props) => {
+  const toastProps = useSelector(state => {
+    return state?.interfaces?.toast;
+  });
+  console.log('toastProps');
+  console.log(toastProps);
   return (
-    <Provider store={store}>
-      <Router>
-        <ThemeProvider theme={theme}>
-          <Leads />
-        </ThemeProvider>
-      </Router>
-    </Provider>
+    <>
+      <ToastMessage {...toastProps } />
+      <Leads />
+    </>
   );
 };
 
