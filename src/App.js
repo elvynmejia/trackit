@@ -8,10 +8,9 @@ import ToastMessage from 'components/shared/toast_message'
 
 const App = (props) => {
   const toastProps = useSelector(state => {
-    return state?.interfaces?.toast;
+    return state?.interfaces?.toast || {};
   });
-  console.log('toastProps');
-  console.log(toastProps);
+
   return (
     <>
       <ToastMessage {...toastProps } />

@@ -77,8 +77,8 @@ export function* saveSaga({ payload } = {}) {
   );
 
   if (response.type === API_ERROR) {
-    console.log(`error => ${JSON.stringify(response)}`);
     yield put(openToastError({ message: 'Something went wrong ...'}));
+    return;
   }
 
   yield put(openToastSuccess());

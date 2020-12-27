@@ -9,7 +9,7 @@ export const openToastSuccess = ({
   id,
   message = 'Success!!',
   severity = 'success',
-}) => ({
+} ={}) => ({
   type: OPEN_TOAST_SUCCESS,
   payload: {
     id,
@@ -26,7 +26,7 @@ export const openToastError = ({
   id,
   message = 'Something went wrong. Try again!!',
   severity = 'error',
-}) => ({
+} = {}) => ({
   type: OPEN_TOAST_ERROR,
   payload: {
     id,

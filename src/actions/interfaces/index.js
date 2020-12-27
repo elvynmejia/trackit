@@ -10,7 +10,7 @@ import {
 
 import {
   OPEN_TOAST_SUCCESS,
-  OPEN_TOAST_ERROR
+  OPEN_TOAST_ERROR,
   CLOSE_TOAST,
   openToastSuccess,
   openToastError,
@@ -30,7 +30,7 @@ export {
   openModal,
   closeModal,
   OPEN_TOAST_SUCCESS,
-  OPEN_TOAST_ERROR
+  OPEN_TOAST_ERROR,
   CLOSE_TOAST,
   openToastSuccess,
   openToastError,

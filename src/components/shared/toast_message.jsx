@@ -4,8 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
 import Snackbar, { SnackbarOrigin } from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import { closeToast } from 'actions/interfaces';
+
+const Alert = (props) => {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 
 export const ToastMessage = (props) => {
   const dispatch = useDispatch();
@@ -33,10 +39,12 @@ export const ToastMessage = (props) => {
       autoHideDuration={6000}
       anchorOrigin={{ vertical, horizontal }}
       open={open}
-      onClose={close}
-      message={message}
       key={vertical + horizontal}
-    />
+    >
+      <Alert onClose={close} severity={severity}>
+        {message}
+      </Alert>
+    </Snackbar>
   );
 }
 
