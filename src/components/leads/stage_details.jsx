@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { call, all, put, takeEvery, select } from 'redux-saga/effects'
-
+import React, { useState } from 'react';
+import { all, put, takeEvery } from 'redux-saga/effects'
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import { uuid } from 'uuidv4';
+// import moment from 'moment';
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -30,7 +29,7 @@ import { TYPE } from 'models/stage';
 import { BoundInput } from 'components/shared/bound_input';
 import { update, callApiAndWait } from 'actions/api';
 import { API_ERROR } from 'actions/requests';
-
+import { generateModalId } from './journey';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -63,10 +62,14 @@ export const save = (props) => ({
 });
 
 export function* saveSaga({ payload } = {}) {
+
   const {
     stageId,
-    requestId,
+    leadId,
   } = payload;
+
+  const requestId = getRequestId({ stageId, leadId });
+  const modalId = generateModalId({ leadId, stageId });
 
   const response = yield callApiAndWait(
     update({
@@ -77,11 +80,18 @@ export function* saveSaga({ payload } = {}) {
   );
 
   if (response.type === API_ERROR) {
-    yield put(openToastError({ message: 'Something went wrong ...'}));
+    yield put(
+      openToastError({
+        message: response.payload.message
+      })
+    );
     return;
   }
 
   yield put(openToastSuccess());
+  yield put(closeModal(
+    modalId
+  ));
 };
 
 export function* sagas(action) {

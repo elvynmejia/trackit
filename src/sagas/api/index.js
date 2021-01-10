@@ -137,8 +137,13 @@ function* create(action) {
 
 function* update(action) {
   const { id, modelType, requestId } = action.payload;
+  debugger
+  const body = yield select(state => {
+    const ac = action;
+    debugger
 
-  const body = yield select(state => state.clientSide[modelType]?.[requestId] || {})
+    return state.clientSide[modelType]?.[requestId] || {}
+  });
 
   const modelClass = getModelClass(modelType);
 
@@ -147,7 +152,6 @@ function* update(action) {
       data,
       status
     } = yield call(modelClass.update.bind(modelClass), id, body);
-
     const entity = new schema.Entity(modelType);
 
     const normalizedData = normalize(Object.values(data)[0], entity);

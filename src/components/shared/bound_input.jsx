@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
+import moment from 'moment';
 
 import {
   KeyboardTimePicker,
@@ -22,8 +23,9 @@ export const BoundInput = ({ modelType, requestId, name: property, type, ...rest
   // should have a default value
   if (type === 'date' || type === 'time' || type === 'datetime') {
     if (!propertyValue) {
-      propertyValue = (new Date()).toISOString();
+      propertyValue = (new Date());
     }
+    propertyValue = moment.utc(propertyValue).format();
   }
 
   const onChange = ({ target }) => {
