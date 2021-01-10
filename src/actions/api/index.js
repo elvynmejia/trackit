@@ -1,4 +1,4 @@
-import { put, takeEvery, take } from 'redux-saga/effects'
+import { put, take } from 'redux-saga/effects'
 
 import { uuid } from 'uuidv4';
 import { get } from 'lodash';

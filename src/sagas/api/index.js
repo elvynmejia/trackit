@@ -137,11 +137,7 @@ function* create(action) {
 
 function* update(action) {
   const { id, modelType, requestId } = action.payload;
-  debugger
   const body = yield select(state => {
-    const ac = action;
-    debugger
-
     return state.clientSide[modelType]?.[requestId] || {}
   });
 
