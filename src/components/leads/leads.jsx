@@ -2,15 +2,22 @@ import React, { useEffect }from 'react';
 import { get } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { makeStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
+import Chip from '@material-ui/core/Chip';
+import Button from '@material-ui/core/Button';
+
+import Divider from '@material-ui/core/Divider';
+
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
+import Grid from '@material-ui/core/Grid';
 
 
 import AddIcon from '@material-ui/icons/Add';
@@ -28,6 +35,32 @@ import AddStageForm from './add_stage';
 import { Journey } from './journey';
 
 import { KEY, MODAL_ID } from './index';
+
+// <CardHeader
+//   avatar={
+//     <Avatar
+//       aria-label="lead"
+//       className={classes.avatar}
+//       variant="square"
+//     >
+//       <BusinessIcon />
+//     </Avatar>
+//   }
+//   action={
+//     <IconButton aria-label="settings">
+//       <MoreVertIcon />
+//     </IconButton>
+//   }
+//   title={company_name}
+//   subheader={description}
+// />
+
+// import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
+
+// import Typography from '@material-ui/core/Typography';
+import ButtonBase from '@material-ui/core/ButtonBase';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -87,49 +120,40 @@ export const Leads = () => {
   return (
     <>
       {leads.map(({id: lead_id, company_name, position, status, description }) => {
+        const props = {
+          lead_id,
+          company_name,
+          position,
+          status,
+          description,
+        };
+
         return (
           <Card key={lead_id} className={classes.root} variant="outlined">
-            <CardHeader
-              avatar={
-                <Avatar
-                  aria-label="lead"
-                  className={classes.avatar}
-                  variant="square"
+            <ComplexGrid
+              {...props }
+            >
+              <CardContent>
+                <Journey lead_id={lead_id} />
+              </CardContent>
+              <CardActions disableSpacing>
+                <IconButton
+                  onClick={() => addStage(lead_id)}
+                  aria-expanded={collapseAddStage[lead_id]}
+                  aria-label="add stage"
                 >
-                  <BusinessIcon />
-                </Avatar>
-              }
-              action={
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
+                  <AddIcon />
                 </IconButton>
-              }
-              title={company_name}
-              subheader={description}
-            />
-            <CardContent>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {position || 'no position specified'}
-              </Typography>
-              <Journey lead_id={lead_id} />
-            </CardContent>
-            <CardActions disableSpacing>
-              <IconButton
-                onClick={() => addStage(lead_id)}
-                aria-expanded={collapseAddStage[lead_id]}
-                aria-label="add stage"
-              >
-                <AddIcon />
-              </IconButton>
-              <IconButton
-                onClick={() => seeMore(lead_id)}
-                aria-expanded={collapseSeeMore[lead_id]}
-                aria-label="show more"
-              >
-                {collapseSeeMore[lead_id] ? <ExpandLess /> : <ExpandMore />}
-              </IconButton>
-            </CardActions>
-            <AddStageForm open={collapseAddStage[lead_id]} lead_id={lead_id} />
+                <IconButton
+                  onClick={() => seeMore(lead_id)}
+                  aria-expanded={collapseSeeMore[lead_id]}
+                  aria-label="show more"
+                >
+                  {collapseSeeMore[lead_id] ? <ExpandLess /> : <ExpandMore />}
+                </IconButton>
+              </CardActions>
+              <AddStageForm open={collapseAddStage[lead_id]} lead_id={lead_id} />
+            </ComplexGrid>
           </Card>
         )
       })}
@@ -138,3 +162,156 @@ export const Leads = () => {
 };
 
 export default Leads;
+
+const useStylesOther = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+    },
+    paper: {
+      padding: theme.spacing(2),
+      margin: 'auto',
+      // maxWidth: 500,
+    },
+    image: {
+      width: '100%',
+      height: '100%',
+    },
+    img: {
+      margin: 'auto',
+      display: 'block',
+      maxWidth: '100%',
+      maxHeight: '100%',
+    },
+  }),
+);
+
+export function ComplexGrid({ children, ...props }) {
+  const classes = useStylesOther();
+  const {
+    lead_id,
+    company_name,
+    position,
+    status,
+    description,
+  } = props;
+
+  return (
+    <div className={classes.root}>
+      <Box className={classes.paper}>
+        <Grid
+          container
+          md={12}
+        >
+          <Grid md={3}>
+            <Avatar
+              aria-label="lead"
+              className={classes.image}
+              variant="square"
+            >
+              <BusinessIcon />
+            </Avatar>
+          </Grid>
+          <Grid md={9}>
+            <Grid
+              item
+              xs
+              container
+              direction="column"
+              spacing={2}
+            >
+              <Grid item>
+                <Typography
+                  gutterBottom
+                  variant="h5"
+                >
+                  {position}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  gutterBottom
+                  color="textSecondary"
+                  component="p"
+                >
+                  {company_name}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  gutterBottom
+                  color="textSecondary"
+                  component="p"
+                >
+                  {description}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Chip
+                  label={status}
+                  color="secondary"
+                  variant="outlined"
+                />
+              </Grid>
+            </Grid>
+            <Grid>
+              bottom
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid container spacing={2}>
+          <Grid item>
+            <Avatar
+              aria-label="lead"
+              className={classes.image}
+              variant="square"
+            >
+              <BusinessIcon />
+            </Avatar>
+          </Grid>
+          <Grid item xs={12} sm container>
+            <Grid
+              item
+              xs
+              container
+              direction="column"
+              spacing={2}
+            >
+              <Grid item xs>
+                <Typography
+                  gutterBottom
+                  variant="h5"
+                >
+                  {position}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  gutterBottom
+                  color="textSecondary"
+                  component="p"
+                >
+                  {company_name}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  gutterBottom
+                  color="textSecondary"
+                  component="p"
+                >
+                  {description}
+                </Typography>
+              </Grid>
+            </Grid>
+            <Grid item>
+              <Chip
+                label={status}
+                color="secondary"
+                variant="outlined"
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+        <Divider />
+        {children}
+      </Box>
+    </div>
+  );
+}
