@@ -2,7 +2,6 @@ import React, { useEffect }from 'react';
 import { get } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
-// import { makeStyles } from '@material-ui/core/styles';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 
 import Card from '@material-ui/core/Card';
@@ -20,6 +19,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 
 
+import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
@@ -32,6 +32,7 @@ import { openModal } from 'actions/interfaces';
 import { TYPE as LEAD_TYPE } from 'models/lead';
 
 import AddStageForm from './add_stage';
+import AddLead from './add_lead';
 import { Sequence } from './sequence';
 
 import { KEY, MODAL_ID } from './index';
@@ -53,10 +54,13 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     height: '100%',
   },
+  addIcon: {
+    marginRight: theme.spacing(1),
+  }
 }));
 
 export const LEADS_REQUEST_ID = `${KEY}/request`;
-
+export const ADD_NEW_LEAD_MODAL_ID = `${KEY}/add-new-lead-modal-id`;
 export const Leads = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -103,7 +107,16 @@ export const Leads = () => {
   }
 
   return (
-    <>
+    <div>
+      <Fab
+        variant="extended"
+        color="primary"
+        onClick={() => dispatch(openModal(ADD_NEW_LEAD_MODAL_ID))}
+      >
+        <AddIcon className={classes.addIcon} />
+        Add New Lead
+      </Fab>
+      <AddLead open={true} modalId={ADD_NEW_LEAD_MODAL_ID} />
       {leads.map(({id: lead_id, company_name, position, status, description }) => {
         const props = {
           lead_id,
@@ -194,7 +207,7 @@ export const Leads = () => {
           </Card>
         )
       })}
-    </>
+    </div>
   );
 };
 

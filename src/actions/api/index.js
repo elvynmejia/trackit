@@ -40,7 +40,7 @@ export const findAll = ({ modelType, query = {}, requestId = getRequestId() } = 
   },
 });
 
-export const API_CREATE = 'ap i/create';
+export const API_CREATE = 'api/create';
 export const create = ({ modelType, data, requestId = getRequestId() } = {}) => ({
   type: API_CREATE,
   payload: {
