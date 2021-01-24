@@ -33,7 +33,7 @@ import StageDetails from './stage_details'
 
 import { MODAL_ID } from './index';
 
-const KEY = 'component/leads/journey';
+const KEY = 'component/leads/sequence';
 
 export const generateModalId = ({ stageId, leadId }) => (
   `${KEY}-lead-${leadId}-stage-${stageId}`
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Journey = ({ lead_id }) => {
+export const Sequence = ({ lead_id }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -196,4 +196,4 @@ StepIcon.propTypes = {
   icon: PropTypes.node,
 };
 
-export default Journey;
+export default Sequence;
