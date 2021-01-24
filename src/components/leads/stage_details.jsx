@@ -29,7 +29,7 @@ import { TYPE } from 'models/stage';
 import { BoundInput } from 'components/shared/bound_input';
 import { update, callApiAndWait } from 'actions/api';
 import { API_ERROR } from 'actions/requests';
-import { generateModalId } from './journey';
+import { generateModalId } from './sequence';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {

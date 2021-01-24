@@ -32,34 +32,12 @@ import { openModal } from 'actions/interfaces';
 import { TYPE as LEAD_TYPE } from 'models/lead';
 
 import AddStageForm from './add_stage';
-import { Journey } from './journey';
+import { Sequence } from './sequence';
 
 import { KEY, MODAL_ID } from './index';
 
-// <CardHeader
-//   avatar={
-//     <Avatar
-//       aria-label="lead"
-//       className={classes.avatar}
-//       variant="square"
-//     >
-//       <BusinessIcon />
-//     </Avatar>
-//   }
-//   action={
-//     <IconButton aria-label="settings">
-//       <MoreVertIcon />
-//     </IconButton>
-//   }
-//   title={company_name}
-//   subheader={description}
-// />
-
-// import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
-
-// import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 
 const useStyles = makeStyles((theme) => ({
@@ -67,6 +45,13 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     backgroundColor: theme.palette.background.paper,
     margin: '10px 3px',
+  },
+  chip: {
+    marginBottom: theme.spacing(1)
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
 }));
 
@@ -130,7 +115,59 @@ export const Leads = () => {
 
         return (
           <Card key={lead_id} className={classes.root} variant="outlined">
-            <ComplexGrid
+            <Grid container className={classes.root} spacing={2}>
+              <Grid item xs={12} container>
+                <Grid
+                  container
+                  spacing={2}
+                >
+                  <Grid item md={3}>
+                    <Avatar
+                      aria-label="lead"
+                      className={classes.image}
+                      variant="square"
+                    >
+                      <BusinessIcon />
+                    </Avatar>
+                  </Grid>
+                  <Grid item>
+                    <Typography
+                      gutterBottom
+                      variant="h5"
+                    >
+                      {position}
+                    </Typography>
+                    <Chip
+                      label={status}
+                      color="secondary"
+                      variant="outlined"
+                      size="small"
+                      className={classes.chip}
+                    />
+                    <Typography
+                      variant="body1"
+                      gutterBottom
+                      color="textSecondary"
+                      component="p"
+                    >
+                      {company_name}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      gutterBottom
+                      color="textSecondary"
+                      component="p"
+                    >
+                      {description}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid>
+              <Sequence lead_id={lead_id} />
+            </Grid>
+            {/*}<ComplexGrid
               {...props }
             >
               <CardContent>
@@ -153,7 +190,7 @@ export const Leads = () => {
                 </IconButton>
               </CardActions>
               <AddStageForm open={collapseAddStage[lead_id]} lead_id={lead_id} />
-            </ComplexGrid>
+            </ComplexGrid> */}
           </Card>
         )
       })}
@@ -162,156 +199,3 @@ export const Leads = () => {
 };
 
 export default Leads;
-
-const useStylesOther = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
-    },
-    paper: {
-      padding: theme.spacing(2),
-      margin: 'auto',
-      // maxWidth: 500,
-    },
-    image: {
-      width: '100%',
-      height: '100%',
-    },
-    img: {
-      margin: 'auto',
-      display: 'block',
-      maxWidth: '100%',
-      maxHeight: '100%',
-    },
-  }),
-);
-
-export function ComplexGrid({ children, ...props }) {
-  const classes = useStylesOther();
-  const {
-    lead_id,
-    company_name,
-    position,
-    status,
-    description,
-  } = props;
-
-  return (
-    <div className={classes.root}>
-      <Box className={classes.paper}>
-        <Grid
-          container
-          md={12}
-        >
-          <Grid md={3}>
-            <Avatar
-              aria-label="lead"
-              className={classes.image}
-              variant="square"
-            >
-              <BusinessIcon />
-            </Avatar>
-          </Grid>
-          <Grid md={9}>
-            <Grid
-              item
-              xs
-              container
-              direction="column"
-              spacing={2}
-            >
-              <Grid item>
-                <Typography
-                  gutterBottom
-                  variant="h5"
-                >
-                  {position}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  gutterBottom
-                  color="textSecondary"
-                  component="p"
-                >
-                  {company_name}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  gutterBottom
-                  color="textSecondary"
-                  component="p"
-                >
-                  {description}
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Chip
-                  label={status}
-                  color="secondary"
-                  variant="outlined"
-                />
-              </Grid>
-            </Grid>
-            <Grid>
-              bottom
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid container spacing={2}>
-          <Grid item>
-            <Avatar
-              aria-label="lead"
-              className={classes.image}
-              variant="square"
-            >
-              <BusinessIcon />
-            </Avatar>
-          </Grid>
-          <Grid item xs={12} sm container>
-            <Grid
-              item
-              xs
-              container
-              direction="column"
-              spacing={2}
-            >
-              <Grid item xs>
-                <Typography
-                  gutterBottom
-                  variant="h5"
-                >
-                  {position}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  gutterBottom
-                  color="textSecondary"
-                  component="p"
-                >
-                  {company_name}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  gutterBottom
-                  color="textSecondary"
-                  component="p"
-                >
-                  {description}
-                </Typography>
-              </Grid>
-            </Grid>
-            <Grid item>
-              <Chip
-                label={status}
-                color="secondary"
-                variant="outlined"
-              />
-            </Grid>
-          </Grid>
-        </Grid>
-        <Divider />
-        {children}
-      </Box>
-    </div>
-  );
-}
