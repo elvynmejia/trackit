@@ -9,6 +9,9 @@ import clsx from 'clsx';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 
+import DoneIcon from '@material-ui/icons/Done';
+import NotListedLocationIcon from '@material-ui/icons/NotListedLocation';
+
 import purple from '@material-ui/core/colors/purple';
 import red from '@material-ui/core/colors/red';
 import indigo from '@material-ui/core/colors/indigo';
@@ -161,11 +164,19 @@ const useStepIconStyles = makeStyles({
 });
 
 const StepIcon = ({ icon: step, ...rest }) => {
+  const stage = useSelector(state => (
+    state.serverSide[STAGE_TYPE]?.[rest.stageId]?.[rest.stageId] || {}
+  ));
+
   const classes = useStepIconStyles();
   const dispatch = useDispatch();
   const modalId = generateModalId({
     ...rest,
   });
+
+  const today = new Date();
+  const endAt = new Date(stage.end_at);
+  const icon = endAt < today ? <DoneIcon /> : <NotListedLocationIcon />;
 
   return (
     <div
@@ -176,7 +187,7 @@ const StepIcon = ({ icon: step, ...rest }) => {
         dispatch(openModal(modalId));
       }}
     >
-      {step}
+      {icon}
     </div>
   );
 }
