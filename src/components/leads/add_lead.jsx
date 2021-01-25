@@ -96,7 +96,7 @@ export function* saveSaga({ payload } = {}) {
     find({
       modelType: TYPE,
       id: Object.keys(response.payload.responseData.leads)[0],
-      requis
+      requestId: FETCH_NEWLY_CREATED_LEAD_REQUEST_ID,
     })
   );
 
