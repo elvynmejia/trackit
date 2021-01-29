@@ -33,10 +33,11 @@ function* find(action) {
   try {
     const { data, status } = yield call(modelClass.find.bind(modelClass), id, query);
 
-    const entity = new schema.Entity(modelType);
+    const entity = new schema.Entity(modelType, {}, { idAttribute: 'public_id' });
 
     const normalizedData = normalize(Object.values(data)[0], entity);
-
+    const responseIds = normalizedData.result;
+    debugger
     yield put(apiReceive({
       modelType,
       responseData: normalizedData.entities,
@@ -47,6 +48,7 @@ function* find(action) {
       modelType,
       status,
       requestId,
+      responseIds,
     }));
   } catch (e) {
     const { status, data } = e?.response;
@@ -69,20 +71,23 @@ function* findAll(action) {
   try {
     const { data, status } = yield call(modelClass.findAll.bind(modelClass), query);
 
-    const entity = new schema.Entity(modelType);
+    const entity = new schema.Entity(modelType, {}, { idAttribute: 'public_id' });
 
     const normalizedData = normalize(Object.values(data)[0], [entity]);
-
+    debugger
     yield put(apiReceive({
       modelType,
       responseData: normalizedData.entities,
       requestId,
     }));
 
+    const responseIds = normalizedData.result;
+
     yield put(apiSuccess({
       modelType,
       status,
       requestId,
+      responseIds
     }));
   } catch (e) {
     const { status, data } = e?.response;
@@ -107,10 +112,10 @@ function* create(action) {
   try {
     const { data, status } = yield call(modelClass.create.bind(modelClass), body);
 
-    const entity = new schema.Entity(modelType);
+    const entity = new schema.Entity(modelType, {}, { idAttribute: 'public_id' });
 
     const normalizedData = normalize(Object.values(data)[0], entity);
-
+    const responseIds = normalizedData.result;
     yield put(apiReceive({
       modelType,
       responseData: normalizedData.entities,
@@ -121,6 +126,7 @@ function* create(action) {
       modelType,
       status,
       requestId,
+      responseIds,
     }));
   } catch (e) {
     const { status, data } = e?.response;
@@ -148,9 +154,10 @@ function* update(action) {
       data,
       status
     } = yield call(modelClass.update.bind(modelClass), id, body);
-    const entity = new schema.Entity(modelType);
+    const entity = new schema.Entity(modelType, {}, { idAttribute: 'public_id' });
 
     const normalizedData = normalize(Object.values(data)[0], entity);
+    const responseIds = normalizedData.result;
 
     yield put(apiReceive({
       modelType,
@@ -162,6 +169,7 @@ function* update(action) {
       modelType,
       status,
       requestId,
+      responseIds,
     }));
   } catch (e) {
     const { status, data } = e?.response;
