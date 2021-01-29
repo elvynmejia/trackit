@@ -42,7 +42,7 @@ const save = (modalId) => ({
 });
 
 // company_name required
-// position required
+// role required
 // contacts required
 // description, optional
 // status required
@@ -160,7 +160,7 @@ export const AddLead = ({ modalId }) => {
         />
         <BoundInput
           {...boundToStoreInputProps}
-          name="position"
+          name="role"
           label="Role (Required)"
           className={classes.textField}
           fullWidth

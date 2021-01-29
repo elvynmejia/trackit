@@ -6,7 +6,14 @@ import {
 } from '../api';
 
 export const API_SUCCESS = 'requests/success';
-export const apiSuccess = ({ modelType, status, errors = [], requestId, message }) => ({
+export const apiSuccess = ({
+  modelType,
+  status,
+  errors = [],
+  requestId,
+  message,
+  responseIds = [],
+}) => ({
   type: API_SUCCESS,
   payload: {
     modelType,
@@ -14,11 +21,19 @@ export const apiSuccess = ({ modelType, status, errors = [], requestId, message 
     errors,
     requestId,
     message,
+    responseIds
   },
 });
 
 export const API_ERROR = 'requests/error';
-export const apiError = ({ modelType, status, errors = [], requestId, message }) => ({
+export const apiError = ({
+  modelType,
+  status,
+  errors = [],
+  requestId,
+  message,
+  responseIds = []
+}) => ({
   type: API_ERROR,
   payload: {
     modelType,
@@ -26,11 +41,19 @@ export const apiError = ({ modelType, status, errors = [], requestId, message })
     errors,
     requestId,
     message,
+    responseIds
   },
 });
 
 export const reducer = (state = {}, { type, payload = {} }) => {
-  const { modelType, status, errors, requestId, message } = payload;
+  const {
+    modelType,
+    status,
+    errors,
+    requestId,
+    message,
+    responseIds,
+  } = payload;
   switch(type) {
   case API_FIND:
   case API_FIND_ALL:
@@ -56,6 +79,7 @@ export const reducer = (state = {}, { type, payload = {} }) => {
           errors,
           requestId,
           message,
+          responseIds,
         },
       },
     };

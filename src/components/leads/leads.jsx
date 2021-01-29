@@ -117,11 +117,11 @@ export const Leads = () => {
         Add New Lead
       </Fab>
       <AddLead open={true} modalId={ADD_NEW_LEAD_MODAL_ID} />
-      {leads.map(({id: lead_id, company_name, position, status, description }) => {
+      {leads.map(({id: lead_id, company_name, role, status, description }) => {
         const props = {
           lead_id,
           company_name,
-          position,
+          role,
           status,
           description,
         };
@@ -148,7 +148,7 @@ export const Leads = () => {
                       gutterBottom
                       variant="h5"
                     >
-                      {position}
+                      {role}
                     </Typography>
                     <Chip
                       label={status}
