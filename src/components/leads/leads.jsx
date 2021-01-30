@@ -17,6 +17,7 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
 
 
 import Fab from '@material-ui/core/Fab';
@@ -61,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const LEADS_REQUEST_ID = `${KEY}/request`;
 export const ADD_NEW_LEAD_MODAL_ID = `${KEY}/add-new-lead-modal-id`;
+export const CURRENT_STAGE_MODAL_ID = `${KEY}/current-stage-modal-id`;
 export const Leads = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -117,7 +119,7 @@ export const Leads = () => {
         Add New Lead
       </Fab>
       <AddLead open={true} modalId={ADD_NEW_LEAD_MODAL_ID} />
-      {leads.map(({id: lead_id, company_name, role, status, description }) => {
+      {leads.map(({id: lead_id, company_name, role, status, description, current_stage_id }) => {
         const props = {
           lead_id,
           company_name,
@@ -157,6 +159,30 @@ export const Leads = () => {
                       size="small"
                       className={classes.chip}
                     />
+                    {current_stage_id ? (
+                      <>
+                        <Typography
+                          variant="body2"
+                          gutterBottom
+                          component="p"
+                        >
+                          <Link
+                            onClick={() => console.log('open a modal to edit lead')}
+                          >
+                            Current Stage {current_stage_id}
+                          </Link>
+                        </Typography>
+                      </>
+                    ) : (
+                      <Typography
+                        variant="body2"
+                        gutterBottom
+                        component="p"
+                      >
+                        No current stage set. Please update this lead to assign a current stage
+                      </Typography>
+
+                    )}
                     <Typography
                       variant="body1"
                       gutterBottom
