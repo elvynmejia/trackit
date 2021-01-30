@@ -35,7 +35,7 @@ import { TYPE as LEAD_TYPE } from 'models/lead';
 import AddStageForm from './add_stage';
 import AddLead from './add_lead';
 import { Sequence } from './sequence';
-
+import ModalDialog from 'components/shared/modal_dialog';
 import { KEY, MODAL_ID } from './index';
 
 import Paper from '@material-ui/core/Paper';
@@ -167,10 +167,17 @@ export const Leads = () => {
                           component="p"
                         >
                           <Link
-                            onClick={() => console.log('open a modal to edit lead')}
+                            onClick={() => dispatch(openModal('openthismodal'))}
                           >
-                            Current Stage {current_stage_id}
+                            See Current Stage
                           </Link>
+                          <ModalDialog
+                            modalId={'openthismodal'}
+                            title="Current Stage"
+                            maxWidth="lg"
+                            content={<>some content</>}
+                            primaryAction={() => console.log('primary action')}
+                          />
                         </Typography>
                       </>
                     ) : (
