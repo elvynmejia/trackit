@@ -36,6 +36,8 @@ import AddStageForm from './add_stage';
 import AddLead from './add_lead';
 import { Sequence } from './sequence';
 import ModalDialog from 'components/shared/modal_dialog';
+import StageDetails from 'components/stages/details';
+
 import { KEY, MODAL_ID } from './index';
 
 import Paper from '@material-ui/core/Paper';
@@ -63,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
 export const LEADS_REQUEST_ID = `${KEY}/request`;
 export const ADD_NEW_LEAD_MODAL_ID = `${KEY}/add-new-lead-modal-id`;
 export const CURRENT_STAGE_MODAL_ID = `${KEY}/current-stage-modal-id`;
+export const STAGE_DETAILS_MODAL_ID = `${KEY}/stage-details-modal-id`;
 export const Leads = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -139,15 +142,15 @@ export const Leads = () => {
                           component="p"
                         >
                           <Link
-                            onClick={() => dispatch(openModal('openthismodal'))}
+                            onClick={() => dispatch(openModal(STAGE_DETAILS_MODAL_ID))}
                           >
                             Current Stage: {current_stage_id}
                           </Link>
                           <ModalDialog
-                            modalId={'openthismodal'}
+                            modalId={STAGE_DETAILS_MODAL_ID}
                             title="Current Stage"
                             maxWidth="lg"
-                            content={<>some content</>}
+                            content={<StageDetails stageId={current_stage_id} />}
                             primaryAction={() => console.log('primary action')}
                           />
                         </Typography>
