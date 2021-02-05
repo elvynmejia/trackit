@@ -8,6 +8,7 @@ import clsx from 'clsx';
 
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
 import DoneIcon from '@material-ui/icons/Done';
 import NotListedLocationIcon from '@material-ui/icons/NotListedLocation';
@@ -60,12 +61,8 @@ export const Sequence = ({ lead_id }) => {
   }, []);
 
   const stages = useSelector(state => {
-    return Object.values(
-      (
-        state?.serverSide?.[STAGE_TYPE] || {}
-      )?.[lead_id.toString()] ||
-      {}
-    )
+    const stages = state.serverSide?.[STAGE_TYPE] ?? {};
+    return Object.values(stages).filter(stage => stage.lead_id === lead_id);
   });
 
   return (
@@ -91,7 +88,7 @@ export const Sequence = ({ lead_id }) => {
                   />
                 )}
               >
-                {title}
+                <Typography>{title}</Typography>
                 <StageDetails
                   stageId={id}
                   modalId={modalId}

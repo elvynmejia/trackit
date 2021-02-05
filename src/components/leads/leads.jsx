@@ -68,20 +68,8 @@ export const Leads = () => {
   const dispatch = useDispatch();
 
   const leads = useSelector(state => {
-    return Object.values(
-      get(state.serverSide, [LEAD_TYPE, LEADS_REQUEST_ID], {})
-    )
+    return Object.values(state.serverSide?.[LEAD_TYPE] ?? {});
   });
-
-  const openLeads = leads.reduce((acc, current) => {
-    return {
-      ...acc,
-      [current.id]: false,
-    }
-  }, {});
-
-  const [collapseSeeMore, collapseSeeMoreToggle] = React.useState(openLeads);
-  const [collapseAddStage, addStageToggle] = React.useState(openLeads);
 
   useEffect(() => {
     dispatch(
@@ -91,22 +79,6 @@ export const Leads = () => {
       })
     )
   }, [dispatch]);
-
-  const seeMore = (lead_id) => {
-    dispatch(
-      openModal(MODAL_ID)
-    );
-  };
-
-  const addStage = (lead_id) => {
-    addStageToggle({
-      [lead_id]: !collapseAddStage[lead_id]
-    });
-    // close see more
-    collapseSeeMoreToggle({
-      [lead_id]: false,
-    });
-  }
 
   return (
     <div>
@@ -169,7 +141,7 @@ export const Leads = () => {
                           <Link
                             onClick={() => dispatch(openModal('openthismodal'))}
                           >
-                            See Current Stage
+                            Current Stage: {current_stage_id}
                           </Link>
                           <ModalDialog
                             modalId={'openthismodal'}
@@ -210,10 +182,11 @@ export const Leads = () => {
                 </Grid>
               </Grid>
             </Grid>
+
             <Grid>
               <Sequence lead_id={lead_id} />
             </Grid>
-            {/*}<ComplexGrid
+            {/*<ComplexGrid
               {...props }
             >
               <CardContent>
