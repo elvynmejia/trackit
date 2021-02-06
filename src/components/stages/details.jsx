@@ -21,7 +21,7 @@ import { TYPE } from 'models/stage';
 // state(pin):"phone_screen"
 // title(pin):"Gloria <> Elvyn | Technical"
 
-const StageDetails = ({ stageId }) => {
+const Details = ({ stageId }) => {
   const stage = useSelector(state => {
     debugger
     return state.serverSide?.[TYPE]?.[stageId] ?? {}
@@ -100,8 +100,8 @@ const StageDetails = ({ stageId }) => {
   );
 }
 
-StageDetails.propTypes = {
+Details.propTypes = {
   stageId: T.string.isRequired,
 };
 
-export default StageDetails;
+export default Details;

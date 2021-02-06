@@ -30,7 +30,7 @@ import { findAll } from 'actions/api';
 import { TYPE as STAGE_TYPE} from 'models/stage';
 import { openModal } from 'actions/interfaces';
 
-import StageDetails from './stage_details';
+import StageDetails from 'components/stages/details_modal';
 
 import { MODAL_ID } from './index';
 

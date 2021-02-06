@@ -4,17 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItem from '@material-ui/core/ListItem';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
-import Slide from '@material-ui/core/Slide';
 
 import { modelCreate } from 'actions/model';
 
@@ -28,7 +17,11 @@ import { TYPE } from 'models/stage';
 import { BoundInput } from 'components/shared/bound_input';
 import { update, callApiAndWait } from 'actions/api';
 import { API_ERROR } from 'actions/requests';
-import { generateModalId } from './sequence';
+import { generateModalId } from 'components/leads/sequence';
+import Details from 'components/stages/details';
+
+import ModalDialog from 'components/shared/modal_dialog';
+
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -43,12 +36,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
+export const KEY = 'component/stages/details';
 
-const KEY = 'component/leads/stage-details';
 const getRequestId = ({ leadId, stageId }) => `${KEY}/edit-lead-${leadId}-stage-${stageId}`;
 
 export const SAVE = `${KEY}/save`;
@@ -115,29 +105,14 @@ const StageDetails = ({ stageId, index, modalId }) => {
     stage.lead_id
   });
 
-  const {
-    open
-  } = useSelector(state => (
-    state.interfaces?.modal?.[modalId] || false
-  ));
-
   const boundToStoreInputProps = {
     modelType: TYPE,
     type: 'text',
     requestId,
   };
 
-  const {
-    title,
-    description,
-    links,
-    start_at,
-    end_at,
-    notes,
-    state,
-  } = stage;
-
   const close = () => dispatch(closeModal(modalId));
+
   const edit = () => {
     toggleEdit(!editing);
     dispatch(modelCreate({
@@ -156,19 +131,31 @@ const StageDetails = ({ stageId, index, modalId }) => {
     })
   );
 
-  return (
-    <Dialog
-      fullScreen
-      open={open}
-      onClose={close}
-      TransitionComponent={Transition}
-    >
-      <Typography
-        variant="h4"
-        align="center"
-      >
-        {title}
-      </Typography>
+  let actions;
+
+  if (editing) {
+    actions = (
+      [
+        <Button
+          onClick={close}
+          variant="contained"
+          color="secondary"
+        >
+          Close
+        </Button>,
+        <Button
+          onClick={onSave}
+          variant="contained"
+          color="primary"
+        >
+          Save
+        </Button>
+      ]
+    )
+  }
+
+  const content = (
+    <>
       {editing ? (
         <form noValidate autoComplete="off">
           <BoundInput
@@ -224,87 +211,21 @@ const StageDetails = ({ stageId, index, modalId }) => {
           />
         </form>
       ) : (
-        <List>
-          <ListItem>
-            <ListItemText
-              primary="state"
-              secondary={state}
-            />
-          </ListItem>
-          <Divider />
-          <ListItem>
-            <ListItemText
-              primary="title"
-              secondary={title}
-            />
-          </ListItem>
-          <Divider />
-          <ListItem>
-            <ListItemText
-              primary="description"
-              secondary={description}
-            />
-          </ListItem>
-          <Divider />
-          <ListItem>
-            <ListItemText
-              primary="notes"
-              secondary={notes}
-            />
-          </ListItem>
-          <Divider />
-          <ListItem>
-            <ListItemText
-              primary="links"
-              secondary={links}
-            />
-          </ListItem>
-          <Divider />
-          <ListItem>
-            <ListItemText
-              primary="Starts At"
-              secondary={start_at}
-            />
-          </ListItem>
-          <Divider />
-          <ListItem>
-            <ListItemText
-              primary="Ends at"
-              secondary={end_at}
-            />
-          </ListItem>
-        </List>
+        <Details stageId={stageId} />
       )}
-      <AppBar className={classes.appBar} position="fixed">
-        <Toolbar>
-          {editing ? (
-            <Button
-              autoFocus
-              color="inherit"
-              onClick={onSave}
-            >
-              Save
-            </Button>
-          ) : (
-            <Button
-              autoFocus
-              color="inherit"
-              onClick={edit}
-            >
-              Edit
-            </Button>
-          )}
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={close}
-            aria-label="close"
-          >
-            <CloseIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-    </Dialog>
+    </>
+  )
+
+  return (
+    <ModalDialog
+      modalId={modalId}
+      title={stage.title}
+      maxWidth="lg"
+      content={content}
+      actions={actions}
+      primaryAction={edit}
+      primaryActionText="Edit"
+    />
   );
 }
 

@@ -36,7 +36,7 @@ import AddStageForm from './add_stage';
 import AddLead from './add_lead';
 import { Sequence } from './sequence';
 import ModalDialog from 'components/shared/modal_dialog';
-import StageDetails from 'components/stages/details';
+import Details from 'components/stages/details';
 
 import { KEY, MODAL_ID } from './index';
 
@@ -150,7 +150,7 @@ export const Leads = () => {
                             modalId={STAGE_DETAILS_MODAL_ID}
                             title="Current Stage"
                             maxWidth="lg"
-                            content={<StageDetails stageId={current_stage_id} />}
+                            content={<Details stageId={current_stage_id} />}
                             primaryAction={() => console.log('primary action')}
                           />
                         </Typography>
