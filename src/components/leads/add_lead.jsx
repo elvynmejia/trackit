@@ -1,19 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { all, put, takeEvery } from 'redux-saga/effects'
 
-import Dialog from '@material-ui/core/Dialog';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
-import Slide from '@material-ui/core/Slide';
-import IconButton from '@material-ui/core/IconButton';
 
 import { TYPE } from 'models/lead';
 import { BoundInput } from 'components/shared/bound_input';
+
+import ModalDialog from 'components/shared/modal_dialog';
+
+
 import {
   closeModal,
   openToastSuccess,
@@ -23,10 +20,6 @@ import {
 import { API_ERROR } from 'actions/requests';
 
 import { create, callApiAndWait, find } from 'actions/api';
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 export const KEY = 'component/leads/add-new-lead';
 export const ADD_NEW_LEAD_REQUEST_ID = `${KEY}/add-new-lead-request-id`;
@@ -90,7 +83,7 @@ export function* saveSaga({ payload } = {}) {
   yield put(openToastSuccess());
   // fetch newly created lead
   // Object.keys(response.payload.responseData.leads)[0]
-  debugger
+  // debugger
 
   yield callApiAndWait(
     find({
@@ -115,14 +108,7 @@ export const AddLead = ({ modalId }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const onClose = () => dispatch(closeModal(modalId));
   const onSubmit = () => dispatch(save(modalId));
-
-  const {
-    open
-  } = useSelector(state => (
-    state.interfaces?.modal?.[modalId] ?? false
-  ));
 
   const boundToStoreInputProps = {
     modelType: TYPE,
@@ -130,13 +116,8 @@ export const AddLead = ({ modalId }) => {
     requestId: ADD_NEW_LEAD_REQUEST_ID,
   };
 
-  return (
-    <Dialog
-      fullScreen
-      open={open}
-      onClose={onClose}
-      TransitionComponent={Transition}
-    >
+  const content = (
+    <>
       <Typography
         variant="h4"
         align="center"
@@ -211,27 +192,19 @@ export const AddLead = ({ modalId }) => {
           fullWidth
         />
       </form>
-      <AppBar className={classes.appBar} position="fixed">
-        <Toolbar>
-          <Button
-            autoFocus
-            type="submit"
-            onClick={onSubmit}
-          >
-            Save
-          </Button>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={onClose}
-            aria-label="close"
-          >
-            <CloseIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-    </Dialog>
+    </>
   )
+
+  return (
+    <ModalDialog
+      modalId={modalId}
+      title={'Fill the form below to createa new lead'}
+      maxWidth="lg"
+      content={content}
+      primaryAction={onSubmit}
+      primaryActionText="Create"
+    />
+  );
 }
 
 export default AddLead;
