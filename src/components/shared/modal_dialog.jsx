@@ -25,7 +25,9 @@ export const ModalDialog = ({
   modalId,
   title,
   primaryAction,
+  primaryActionText,
   secondaryAction,
+  secondaryActionText,
   maxWidth,
   actions,
   content,
@@ -60,14 +62,22 @@ export const ModalDialog = ({
       </DialogContent>
       <DialogActions>
         { actions ? (
-          <p>custom actions</p>
+          actions.map(action => action)
         ) : (
           <>
-            <Button onClick={handleClose} color="secondary">
-              Close
+            <Button
+              onClick={handleClose}
+              variant="contained"
+              color="secondary"
+            >
+              {secondaryActionText || 'Close'}
             </Button>
-            <Button onClick={primaryAction} color="primary" autoFocus>
-              Ok
+            <Button
+              onClick={primaryAction}
+              variant="contained"
+              color="primary"
+            >
+              {primaryActionText || 'Ok'}
             </Button>
           </>
         )}
@@ -81,7 +91,9 @@ ModalDialog.propTypes = {
   title: T.string.isRequired,
   onClose: T.func,
   primaryAction: T.func.isRequired,
+  primaryActionText: T.string.isRequired,
   secondaryAction: T.func,
+  secondaryActionText: T.string.isRequired,
   maxWidth: T.string,
   actions: T.arrayOf(T.node),
   content: T.node.isRequired,
