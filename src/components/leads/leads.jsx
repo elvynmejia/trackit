@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-
 import Chip from '@material-ui/core/Chip';
 
 import Card from '@material-ui/core/Card';
@@ -16,16 +15,20 @@ import Link from '@material-ui/core/Link';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import BusinessIcon from '@material-ui/icons/Business';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import { findAll } from 'actions/api';
-import { openModal } from 'actions/interfaces';
+import { openModal, openMenu, closeMenu } from 'actions/interfaces';
 
 import { TYPE as LEAD_TYPE } from 'models/lead';
 
-// import AddStageForm from './add_stage';
 import AddLead from './add_lead';
+import EditLead from './edit';
+
 import { Sequence } from './sequence';
 import StageDetails from 'components/stages/details_modal';
+import PopoverMenu from 'components/shared/popover_menu';
 import { KEY } from './index';
 
 
@@ -51,6 +54,11 @@ export const LEADS_REQUEST_ID = `${KEY}/request`;
 export const ADD_NEW_LEAD_MODAL_ID = `${KEY}/add-new-lead-modal-id`;
 export const CURRENT_STAGE_MODAL_ID = `${KEY}/current-stage-modal-id`;
 export const STAGE_DETAILS_MODAL_ID = `${KEY}/stage-details-modal-id`;
+export const EDIT_LEAD_MODAL_ID = `${KEY}/edit-lead-modal-id`;
+
+export const MENU = `${KEY}/menu`;
+export const menuId = (id) => `${MENU}/${id}`;
+
 export const Leads = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -68,6 +76,13 @@ export const Leads = () => {
     )
   }, [dispatch]);
 
+  const editModalId = (id) => `${EDIT_LEAD_MODAL_ID}/${id}`;
+
+  const editLead = (id) => {
+    dispatch(closeMenu(menuId(id)));
+    dispatch(openModal(editModalId(id)));
+  };
+
   return (
     <div>
       <Fab
@@ -78,8 +93,10 @@ export const Leads = () => {
         <AddIcon className={classes.addIcon} />
         Add New Lead
       </Fab>
+
       <AddLead open={true} modalId={ADD_NEW_LEAD_MODAL_ID} />
       {leads.map(({id: lead_id, company_name, role, status, description, current_stage_id }) => {
+        const popOverMenuId = menuId(lead_id);
         return (
           <Card key={lead_id} className={classes.root} variant="outlined">
             <Grid container className={classes.root} spacing={2}>
@@ -97,12 +114,13 @@ export const Leads = () => {
                       <BusinessIcon />
                     </Avatar>
                   </Grid>
-                  <Grid item>
+                  <Grid item md={6}>
                     <Typography
                       gutterBottom
                       variant="h5"
                     >
                       {role}
+                      {lead_id}
                     </Typography>
                     <Chip
                       label={status}
@@ -156,6 +174,38 @@ export const Leads = () => {
                       {description}
                     </Typography>
                   </Grid>
+                  <Grid item md={3}
+                    container
+                    direction="row"
+                    justify="flex-end"
+                  >
+                    <MoreVertIcon
+                      aria-controls={popOverMenuId}
+                      aria-haspopup="true"
+                      onClick={(e) => {
+                        dispatch(
+                          openMenu({ target: e.currentTarget, id: popOverMenuId})
+                        )
+                      }}
+                    />
+                    <PopoverMenu
+                      menuId={popOverMenuId}
+                    >
+                      <MenuItem
+                        onClick={() => editLead(lead_id)}
+                      >
+                          Edit
+                      </MenuItem>
+                      <MenuItem>My account</MenuItem>
+                      <MenuItem>Logout</MenuItem>
+                    </PopoverMenu>
+
+                    <EditLead
+                      key={editModalId(lead_id)}
+                      modalId={editModalId(lead_id)}
+                      leadId={lead_id}
+                    />
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
@@ -168,5 +218,6 @@ export const Leads = () => {
     </div>
   );
 };
+
 
 export default Leads;
