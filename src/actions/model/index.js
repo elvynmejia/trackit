@@ -34,7 +34,9 @@ export const reducer = (state = {}, { type, payload = {} }) => {
   switch(type) {
   case MODEL_CREATE:
     return {
+      ...state,
       [modelType]: {
+        ...state[modelType],
         [requestId]: {
           ...payload.payload
         },
@@ -42,7 +44,9 @@ export const reducer = (state = {}, { type, payload = {} }) => {
     };
   case MODEL_UPDATE:
     return {
+      ...state,
       [modelType]: {
+        ...state[modelType],
         [requestId]: {
           ...state[modelType]?.[requestId],
           [name]: value,
