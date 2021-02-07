@@ -1,36 +1,38 @@
-export const OPEN_MODAL = 'openModal';
-export const CLOSE_MODAL = 'closeModal';
+export const OPEN_MENU = 'openMenu';
+export const CLOSE_MENU = 'closeMenu';
 
-export const openModal = (id) => ({
-  type: OPEN_MODAL,
+export const openMenu = ({ id, target }) => ({
+  type: OPEN_MENU,
   payload: {
     id,
+    target,
   },
 });
 
-export const closeModal = (id) => ({
-  type: CLOSE_MODAL,
+export const closeMenu = (id) => ({
+  type: CLOSE_MENU,
   payload: {
     id,
   },
 });
 
 export const reducer = (state = {}, { type, payload = {} }) => {
-  const { id } = payload;
+  const { id, target } = payload;
   switch(type) {
-  case CLOSE_MODAL:
+  case CLOSE_MENU:
     return {
       ...state,
       [id]: {
         open: false,
+        target: null,
       },
     };
-  case OPEN_MODAL:
-    debugger
+  case OPEN_MENU:
     return {
       ...state,
       [id]: {
         open: true,
+        target,
       },
     };
   default:

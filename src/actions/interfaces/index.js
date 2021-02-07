@@ -18,10 +18,19 @@ import {
   reducer as toast,
 } from './toast';
 
+import {
+  OPEN_MENU,
+  CLOSE_MENU,
+  openMenu,
+  closeMenu,
+  reducer as menu,
+} from './menu';
+
 
 const reducer = combineReducers({
   modal,
   toast,
+  menu,
 });
 
 export {
@@ -35,5 +44,9 @@ export {
   openToastSuccess,
   openToastError,
   closeToast,
+  OPEN_MENU,
+  CLOSE_MENU,
+  openMenu,
+  closeMenu,
   reducer,
 };
