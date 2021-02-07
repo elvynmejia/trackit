@@ -23,7 +23,6 @@ import { TYPE } from 'models/stage';
 
 const Details = ({ stageId }) => {
   const stage = useSelector(state => {
-    debugger
     return state.serverSide?.[TYPE]?.[stageId] ?? {}
   });
 

@@ -39,7 +39,9 @@ const useStyles = makeStyles((theme) => ({
 
 export const KEY = 'component/stages/details';
 
-const getRequestId = ({ leadId, stageId }) => `${KEY}/edit-lead-${leadId}-stage-${stageId}`;
+const getRequestId = ({ leadId, stageId }) => (
+  `${KEY}/edit-lead-${leadId}-stage-${stageId}`
+);
 
 export const SAVE = `${KEY}/save`;
 
