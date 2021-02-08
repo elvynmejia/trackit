@@ -194,7 +194,7 @@ export const Leads = () => {
                       <MenuItem
                         onClick={() => editLead(lead_id)}
                       >
-                          Edit
+                        Edit
                       </MenuItem>
                       <MenuItem>My account</MenuItem>
                       <MenuItem>Logout</MenuItem>
