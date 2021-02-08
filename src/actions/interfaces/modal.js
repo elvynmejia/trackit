@@ -26,7 +26,6 @@ export const reducer = (state = {}, { type, payload = {} }) => {
       },
     };
   case OPEN_MODAL:
-    debugger
     return {
       ...state,
       [id]: {

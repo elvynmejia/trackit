@@ -25,6 +25,7 @@ import { TYPE as LEAD_TYPE } from 'models/lead';
 
 import AddLead from './add_lead';
 import EditLead from './edit';
+import LeadDetails from './details';
 
 import { Sequence } from './sequence';
 import StageDetails from 'components/stages/details_modal';
@@ -55,6 +56,8 @@ export const ADD_NEW_LEAD_MODAL_ID = `${KEY}/add-new-lead-modal-id`;
 export const CURRENT_STAGE_MODAL_ID = `${KEY}/current-stage-modal-id`;
 export const STAGE_DETAILS_MODAL_ID = `${KEY}/stage-details-modal-id`;
 export const EDIT_LEAD_MODAL_ID = `${KEY}/edit-lead-modal-id`;
+export const SEE_LEAD_MODAL_ID = `${KEY}/see-lead-modal-id`;
+
 
 export const MENU = `${KEY}/menu`;
 export const menuId = (id) => `${MENU}/${id}`;
@@ -77,10 +80,16 @@ export const Leads = () => {
   }, [dispatch]);
 
   const editModalId = (id) => `${EDIT_LEAD_MODAL_ID}/${id}`;
+  const seeModalId = (id) => `${SEE_LEAD_MODAL_ID}/${id}`;
 
   const editLead = (id) => {
     dispatch(closeMenu(menuId(id)));
     dispatch(openModal(editModalId(id)));
+  };
+
+  const seeLead = (id) => {
+    dispatch(closeMenu(menuId(id)));
+    dispatch(openModal(seeModalId(id)));
   };
 
   return (
@@ -196,7 +205,11 @@ export const Leads = () => {
                       >
                         Edit
                       </MenuItem>
-                      <MenuItem>My account</MenuItem>
+                      <MenuItem
+                        onClick={() => seeLead(lead_id)}
+                      >
+                        See Details
+                      </MenuItem>
                       <MenuItem>Logout</MenuItem>
                     </PopoverMenu>
 
@@ -204,6 +217,12 @@ export const Leads = () => {
                       key={editModalId(lead_id)}
                       modalId={editModalId(lead_id)}
                       leadId={lead_id}
+                    />
+                    <LeadDetails
+                      key={seeModalId(lead_id)}
+                      modalId={seeModalId(lead_id)}
+                      leadId={lead_id}
+                      onEdit={() => dispatch(openModal(editModalId(lead_id)))}
                     />
                   </Grid>
                 </Grid>

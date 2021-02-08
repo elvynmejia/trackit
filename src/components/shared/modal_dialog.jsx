@@ -39,7 +39,7 @@ export const ModalDialog = ({
   const {
     open
   } = useSelector(state => (
-    state.interfaces?.modal?.[modalId] || false
+    state.interfaces?.modal?.[modalId] ?? false
   ));
 
   const handleClose = () => dispatch(closeModal(modalId)) || secondaryAction;
