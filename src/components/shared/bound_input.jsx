@@ -10,10 +10,19 @@ import {
 } from '@material-ui/pickers';
 
 import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+
 
 import { modelUpdate } from 'actions/model';
 
-export const BoundInput = ({ modelType, requestId, name: property, type, ...rest}) => {
+export const BoundInput = ({
+  modelType,
+  requestId, name:
+  property,
+  type,
+  options = [],
+  ...rest
+}) => {
   const dispatch = useDispatch();
 
   let propertyValue = useSelector(state => (
@@ -67,6 +76,25 @@ export const BoundInput = ({ modelType, requestId, name: property, type, ...rest
         {...rest}
       />
     )
+  } else if (type === 'select') {
+    return (
+      <TextField
+        select
+        value={propertyValue}
+        onChange={onChange}
+        name={property}
+        {...rest}
+      >
+        {options.map(({ value, label}) => (
+          <MenuItem
+            key={value}
+            value={value}
+          >
+            {label}
+          </MenuItem>
+        ))}
+      </TextField>
+    )
   }
 
   return (
@@ -84,6 +112,11 @@ BoundInput.propTypes = {
   name: T.string.isRequired,
   modelType: T.string.isRequired,
   type: T.string.isRequired,
+  options: T.arrayOf(T.shape({
+    label: T.string.isRequired,
+    value: T.string.isRequired,
+  })),
 };
+
 
 export default BoundInput;
