@@ -22,6 +22,8 @@ export const ToastMessage = (props) => {
     id,
     message = 'Success!!',
     severity,
+    requestId,
+    modelType,
   } = props;
 
   const {
@@ -29,6 +31,10 @@ export const ToastMessage = (props) => {
   } = useSelector(state => (
     state.interfaces?.toast
   ));
+
+  const { errors, message: errorMessage } = useSelector(state => {
+    return state.requests?.[modelType]?.[requestId] ?? { errors: [], message: null };
+  });
 
   const close = () => {
     dispatch(closeToast());
@@ -42,7 +48,18 @@ export const ToastMessage = (props) => {
       key={vertical + horizontal}
     >
       <Alert onClose={close} severity={severity}>
-        {message}
+        {message || errorMessage}
+        {errors.length && (
+          <ul>
+            {errors.map((error, i) => (
+              Object.keys(error).map(errorKey => (
+                <li key={errorKey}>
+                  {errorKey}: {JSON.stringify(error[errorKey])}
+                </li>
+              ))
+            ))}
+          </ul>
+        )}
       </Alert>
     </Snackbar>
   );

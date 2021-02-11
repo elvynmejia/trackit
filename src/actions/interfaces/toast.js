@@ -9,6 +9,8 @@ export const openToastSuccess = ({
   id,
   message = 'Success!!',
   severity = 'success',
+  requestId = null,
+  modelType
 } ={}) => ({
   type: OPEN_TOAST_SUCCESS,
   payload: {
@@ -16,7 +18,9 @@ export const openToastSuccess = ({
     vertical,
     horizontal,
     message,
-    severity
+    severity,
+    requestId,
+    modelType,
   },
 });
 
@@ -26,6 +30,8 @@ export const openToastError = ({
   id,
   message = 'Something went wrong. Try again!!',
   severity = 'error',
+  requestId = null,
+  modelType,
 } = {}) => ({
   type: OPEN_TOAST_ERROR,
   payload: {
@@ -34,6 +40,8 @@ export const openToastError = ({
     horizontal,
     message,
     severity,
+    requestId,
+    modelType,
   },
 });
 
