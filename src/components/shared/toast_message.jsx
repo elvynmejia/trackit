@@ -51,7 +51,7 @@ export const ToastMessage = (props) => {
         {message || errorMessage}
         {errors.length && (
           <ul>
-            {errors.map((error, i) => (
+            {errors.map(error => (
               Object.keys(error).map(errorKey => (
                 <li key={errorKey}>
                   {errorKey}: {JSON.stringify(error[errorKey])}
