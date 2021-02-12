@@ -3,12 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
 import { all, put, takeEvery } from 'redux-saga/effects'
 
-import Typography from '@material-ui/core/Typography';
-
 import { TYPE } from 'models/lead';
 import { BoundInput } from 'components/shared/bound_input';
 
 import ModalDialog from 'components/shared/modal_dialog';
+import { stateOptions } from 'constants/index';
 
 
 import {
@@ -19,7 +18,7 @@ import {
 
 import { API_ERROR } from 'actions/requests';
 
-import { create, callApiAndWait, find } from 'actions/api';
+import { create, callApiAndWait } from 'actions/api';
 
 export const KEY = 'component/leads/add-new-lead';
 export const ADD_NEW_LEAD_REQUEST_ID = `${KEY}/add-new-lead-request-id`;
@@ -74,24 +73,15 @@ export function* saveSaga({ payload } = {}) {
   if (response.type === API_ERROR) {
     yield put(
       openToastError({
-        message: response.payload.message
+        message: response.payload.message,
+        modelType: TYPE,
+        requestId: ADD_NEW_LEAD_REQUEST_ID,
       })
     );
     return;
   }
 
   yield put(openToastSuccess());
-  // fetch newly created lead
-  // Object.keys(response.payload.responseData.leads)[0]
-  // debugger
-
-  yield callApiAndWait(
-    find({
-      modelType: TYPE,
-      id: Object.keys(response.payload.responseData.leads)[0],
-      requestId: FETCH_NEWLY_CREATED_LEAD_REQUEST_ID,
-    })
-  );
 
   yield put(closeModal(
     modalId
@@ -117,82 +107,75 @@ export const AddLead = ({ modalId }) => {
   };
 
   const content = (
-    <>
-      <Typography
-        variant="h4"
-        align="center"
-      >
-        Fill the form below to createa new lead
-      </Typography>
+    <form
+      autoComplete="off"
+      m={6}
+      className={classes.form}
+    >
+      <BoundInput
+        {...boundToStoreInputProps}
+        name="company_name"
+        label="Company Name (required)"
+        margin="normal"
+        className={classes.textField}
+        fullWidth
+        required
+      />
+      <BoundInput
+        {...boundToStoreInputProps}
+        name="role"
+        label="Role (Required)"
+        className={classes.textField}
+        fullWidth
+        required
+      />
+      <BoundInput
+        {...boundToStoreInputProps}
+        name="contacts"
+        label="Lis of contact(s) (required)"
+        className={classes.textField}
+        fullWidth
+        multiline
+        rows={4}
+        required
+      />
+      <BoundInput
+        {...boundToStoreInputProps}
+        margin="normal"
+        name="status"
+        label="Status"
+        className={classes.textField}
+        fullWidth
+        type="select"
+        options={stateOptions}
+      />
+      <BoundInput
+        {...boundToStoreInputProps}
+        name="description"
+        label="Description"
+        className={classes.textField}
+        fullWidth
+        multiline
+        rows={4}
+      />
+      <BoundInput
+        {...boundToStoreInputProps}
+        margin="normal"
+        name="reference"
+        label="reference"
+        className={classes.textField}
+        fullWidth
+      />
+      <BoundInput
+        {...boundToStoreInputProps}
+        margin="normal"
+        name="current_stage_id"
+        label="Current Stage Id"
+        className={classes.textField}
+        fullWidth
+      />
+    </form>
 
-      <form
-        autoComplete="off"
-        m={6}
-        className={classes.form}
-      >
-        <BoundInput
-          {...boundToStoreInputProps}
-          name="company_name"
-          label="Company Name (required)"
-          margin="normal"
-          className={classes.textField}
-          fullWidth
-          required
-        />
-        <BoundInput
-          {...boundToStoreInputProps}
-          name="role"
-          label="Role (Required)"
-          className={classes.textField}
-          fullWidth
-          required
-        />
-        <BoundInput
-          {...boundToStoreInputProps}
-          name="contacts"
-          label="Lis of contact(s) (required)"
-          className={classes.textField}
-          fullWidth
-          multiline
-          rows={4}
-          required
-        />
-        <BoundInput
-          {...boundToStoreInputProps}
-          name="description"
-          label="Description"
-          className={classes.textField}
-          fullWidth
-          multiline
-          rows={4}
-        />
-        <BoundInput
-          {...boundToStoreInputProps}
-          margin="normal"
-          name="status"
-          label="Status(required)"
-          className={classes.textField}
-          fullWidth
-          required
-        />
-        <BoundInput
-          {...boundToStoreInputProps}
-          margin="normal"
-          name="reference"
-          label="reference"
-          className={classes.textField}
-          fullWidth
-        />
-        <BoundInput
-          {...boundToStoreInputProps}
-          margin="normal"
-          name="current_stage_id"
-          label="Current Stage Id"
-          className={classes.textField}
-          fullWidth
-        />
-      </form>
-    </>
   )
 
   return (
