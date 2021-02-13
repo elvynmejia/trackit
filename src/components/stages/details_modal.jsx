@@ -19,6 +19,7 @@ import { update, callApiAndWait } from 'actions/api';
 import { API_ERROR } from 'actions/requests';
 import { generateModalId } from 'components/leads/sequence';
 import Details from 'components/stages/details';
+import { stateOptions } from 'constants/index';
 
 import ModalDialog from 'components/shared/modal_dialog';
 
@@ -160,6 +161,16 @@ const StageDetails = ({ stageId, index, modalId }) => {
     <>
       {editing ? (
         <form noValidate autoComplete="off">
+          <BoundInput
+            {...boundToStoreInputProps}
+            margin="normal"
+            name="status"
+            label="Status"
+            className={classes.textField}
+            fullWidth
+            type="select"
+            options={stateOptions}
+          />
           <BoundInput
             {...boundToStoreInputProps}
             name="title"
