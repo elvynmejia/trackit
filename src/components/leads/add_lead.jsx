@@ -181,7 +181,7 @@ export const AddLead = ({ modalId }) => {
   return (
     <ModalDialog
       modalId={modalId}
-      title={'Fill the form below to createa new lead'}
+      title="Fill the form below to createa new lead"
       maxWidth="lg"
       content={content}
       primaryAction={onSubmit}

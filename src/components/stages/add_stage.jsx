@@ -28,7 +28,7 @@ import { stateOptions } from 'constants/index';
 // description str
 // notes str
 // lead_id int
-// state str
+// status str
 // start_at datetime
 // end_at datitime
 
@@ -44,9 +44,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const KEY = 'components/stages/add-new-stage';
-export const SAVE = `${KEY}/create-stage`;
+export const SAVE = `${KEY}/add-stage`;
 export const save = (props) => ({
-  key: SAVE,
+  type: SAVE,
   payload: {
     ...props,
   },
@@ -69,7 +69,8 @@ export function* saveSaga({ payload } = {}) {
   if (response.type === API_ERROR) {
     yield put(
       openToastError({
-        message: response.payload.message
+        modelType: TYPE,
+        requestId,
       })
     );
     return;
@@ -99,13 +100,10 @@ export const AddStage = ({ leadId, modalId }) => {
   useEffect(() => {
     dispatch(modelCreate({
       modelType: TYPE,
-      requestId,
       payload: {
-        state: 'phone_screen',
         lead_id: leadId,
-        start_at: (new Date()).toISOString(),
-        end_at: (new Date()).toISOString(),
       },
+      requestId,
     }));
   }, [dispatch, requestId, leadId]);
 
@@ -116,14 +114,21 @@ export const AddStage = ({ leadId, modalId }) => {
   };
 
   const submit = () => {
-    dispatch(create({
-      modelType: TYPE,
-      requestId,
-    }));
+    dispatch(save({ modalId, requestId }));
   }
 
   const content = (
     <form noValidate autoComplete="off">
+      <BoundInput
+        {...boundToStoreInputProps}
+        margin="normal"
+        name="status"
+        label="Status"
+        className={classes.textField}
+        fullWidth
+        type="select"
+        options={stateOptions}
+      />
       <BoundInput
         {...boundToStoreInputProps}
         name="title"
@@ -175,23 +180,13 @@ export const AddStage = ({ leadId, modalId }) => {
         fullWidth
         type="datime"
       />
-      <BoundInput
-        {...boundToStoreInputProps}
-        margin="normal"
-        name="status"
-        label="Status"
-        className={classes.textField}
-        fullWidth
-        type="select"
-        options={stateOptions}
-      />
     </form>
   );
 
   return (
     <ModalDialog
       modalId={modalId}
-      title={'Add New Stage'}
+      title={`Add New Stage for lead ${leadId}`}
       maxWidth="lg"
       content={content}
       primaryAction={submit}
