@@ -16,6 +16,8 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import BusinessIcon from '@material-ui/icons/Business';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import IconButton from '@material-ui/core/IconButton';
+
 import MenuItem from '@material-ui/core/MenuItem';
 
 import { findAll } from 'actions/api';
@@ -29,6 +31,8 @@ import LeadDetails from './details';
 
 import { Sequence } from './sequence';
 import StageDetails from 'components/stages/details_modal';
+import AddStage from 'components/stages/add_stage';
+
 import PopoverMenu from 'components/shared/popover_menu';
 import { KEY } from './index';
 
@@ -57,6 +61,7 @@ export const CURRENT_STAGE_MODAL_ID = `${KEY}/current-stage-modal-id`;
 export const STAGE_DETAILS_MODAL_ID = `${KEY}/stage-details-modal-id`;
 export const EDIT_LEAD_MODAL_ID = `${KEY}/edit-lead-modal-id`;
 export const SEE_LEAD_MODAL_ID = `${KEY}/see-lead-modal-id`;
+export const ADD_NEW_STAGE_MODAL_ID = `${KEY}/add-new-stage-modal-id`;
 
 
 export const MENU = `${KEY}/menu`;
@@ -81,16 +86,27 @@ export const Leads = () => {
 
   const editModalId = (id) => `${EDIT_LEAD_MODAL_ID}/${id}`;
   const seeModalId = (id) => `${SEE_LEAD_MODAL_ID}/${id}`;
+  const addNewStageModalId = (id) => `${ADD_NEW_STAGE_MODAL_ID}/${id}`;
 
   const editLead = (id) => {
-    dispatch(closeMenu(menuId(id)));
-    dispatch(openModal(editModalId(id)));
+    // dispatch(closeMenu(menuId(id)));
+    dispatch(
+      openModal(editModalId(id))
+    );
   };
 
   const seeLead = (id) => {
-    dispatch(closeMenu(menuId(id)));
-    dispatch(openModal(seeModalId(id)));
+    // dispatch(closeMenu(menuId(id)));
+    dispatch(
+      openModal(seeModalId(id))
+    );
   };
+
+  const addNewStage = (id) => {
+    dispatch(
+      openModal(addNewStageModalId(id))
+    );
+  }
 
   return (
     <div>
@@ -187,16 +203,10 @@ export const Leads = () => {
                     container
                     direction="row"
                     justify="flex-end"
+                    alignContent="flex-start"
+                    alignItems="flex-start"
                   >
-                    <MoreVertIcon
-                      aria-controls={popOverMenuId}
-                      aria-haspopup="true"
-                      onClick={(e) => {
-                        dispatch(
-                          openMenu({ target: e.currentTarget, id: popOverMenuId})
-                        )
-                      }}
-                    />
+
                     <PopoverMenu
                       menuId={popOverMenuId}
                     >
@@ -210,7 +220,11 @@ export const Leads = () => {
                       >
                         See Details
                       </MenuItem>
-                      <MenuItem>Logout</MenuItem>
+                      <MenuItem
+                        onClick={() => addNewStage(lead_id)}
+                      >
+                        Add a Stage
+                      </MenuItem>
                     </PopoverMenu>
 
                     <EditLead
@@ -223,6 +237,10 @@ export const Leads = () => {
                       modalId={seeModalId(lead_id)}
                       leadId={lead_id}
                       onEdit={() => dispatch(openModal(editModalId(lead_id)))}
+                    />
+                    <AddStage
+                      modalId={addNewStageModalId(lead_id)}
+                      leadId={lead_id}
                     />
                   </Grid>
                 </Grid>
