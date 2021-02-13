@@ -52,7 +52,7 @@ export const ModalDialog = ({
       aria-describedby="alert-dialog-description"
       TransitionComponent={Transition}
       maxWidth={maxWidth}
-      fullScreen
+
     >
       <DialogTitle align="center">
         {title}

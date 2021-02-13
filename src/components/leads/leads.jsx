@@ -28,6 +28,8 @@ import { TYPE as LEAD_TYPE } from 'models/lead';
 import AddLead from './add_lead';
 import EditLead from './edit';
 import LeadDetails from './details';
+import DeleteLead from './delete';
+
 
 import { Sequence } from './sequence';
 import StageDetails from 'components/stages/details_modal';
@@ -62,6 +64,7 @@ export const STAGE_DETAILS_MODAL_ID = `${KEY}/stage-details-modal-id`;
 export const EDIT_LEAD_MODAL_ID = `${KEY}/edit-lead-modal-id`;
 export const SEE_LEAD_MODAL_ID = `${KEY}/see-lead-modal-id`;
 export const ADD_NEW_STAGE_MODAL_ID = `${KEY}/add-new-stage-modal-id`;
+export const DELETE_LEAD_MODAL_ID = `${KEY}/delete-lead-modal-id`;
 
 
 export const MENU = `${KEY}/menu`;
@@ -87,16 +90,15 @@ export const Leads = () => {
   const editModalId = (id) => `${EDIT_LEAD_MODAL_ID}/${id}`;
   const seeModalId = (id) => `${SEE_LEAD_MODAL_ID}/${id}`;
   const addNewStageModalId = (id) => `${ADD_NEW_STAGE_MODAL_ID}/${id}`;
+  const deleteLeadModalId = (id) => `${DELETE_LEAD_MODAL_ID}/${id}`;
 
   const editLead = (id) => {
-    // dispatch(closeMenu(menuId(id)));
     dispatch(
       openModal(editModalId(id))
     );
   };
 
   const seeLead = (id) => {
-    // dispatch(closeMenu(menuId(id)));
     dispatch(
       openModal(seeModalId(id))
     );
@@ -105,6 +107,12 @@ export const Leads = () => {
   const addNewStage = (id) => {
     dispatch(
       openModal(addNewStageModalId(id))
+    );
+  }
+
+  const deleteCurrentLead = (id) => {
+    dispatch(
+      openModal(deleteLeadModalId(id))
     );
   }
 
@@ -120,7 +128,7 @@ export const Leads = () => {
       </Fab>
 
       <AddLead open={true} modalId={ADD_NEW_LEAD_MODAL_ID} />
-      {leads.map(({id: lead_id, company_name, role, status, description, current_stage_id }) => {
+      {leads.map(({id: lead_id, company_name, role, status, description, current_stage_id, disabled_at }) => {
         const popOverMenuId = menuId(lead_id);
         return (
           <Card key={lead_id} className={classes.root} variant="outlined">
@@ -204,26 +212,32 @@ export const Leads = () => {
                     direction="row"
                     justify="flex-end"
                     alignContent="flex-start"
-                    alignItems="flex-start"
+                    alignItems="center"
                   >
 
+                    {disabled_at && <Chip label="Disabled" />}
                     <PopoverMenu
                       menuId={popOverMenuId}
                     >
                       <MenuItem
                         onClick={() => editLead(lead_id)}
                       >
-                        Edit
+                        Edit Lead
                       </MenuItem>
                       <MenuItem
                         onClick={() => seeLead(lead_id)}
                       >
-                        See Details
+                        See Lead Details
                       </MenuItem>
                       <MenuItem
                         onClick={() => addNewStage(lead_id)}
                       >
                         Add a Stage
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => deleteCurrentLead(lead_id)}
+                      >
+                        Delete Lead
                       </MenuItem>
                     </PopoverMenu>
 
@@ -240,6 +254,10 @@ export const Leads = () => {
                     />
                     <AddStage
                       modalId={addNewStageModalId(lead_id)}
+                      leadId={lead_id}
+                    />
+                    <DeleteLead
+                      modalId={deleteLeadModalId(lead_id)}
                       leadId={lead_id}
                     />
                   </Grid>
