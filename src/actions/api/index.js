@@ -3,7 +3,7 @@ import { put, take } from 'redux-saga/effects'
 import { uuid } from 'uuidv4';
 import { get } from 'lodash';
 
-import { API_ERROR } from 'actions/requests';
+import { API_ERROR, API_SUCCESS } from 'actions/requests';
 
 const getRequestId = () => uuid();
 const uniqueRecordId = () => uuid();
@@ -61,10 +61,20 @@ export const update = ({ id, modelType, data, requestId = getRequestId() } = {})
   },
 });
 
+export const API_DELETE = 'api/delete';
+export const destroy = ({ id, modelType, requestId = getRequestId() } = {}) => ({
+  type: API_DELETE,
+  payload: {
+    id,
+    modelType,
+    requestId,
+  },
+});
+
 export function* callApiAndWait(action) {
   yield put(action);
   while(true) {
-    const response = yield take([API_RECEIVE, API_ERROR]);
+    const response = yield take([API_RECEIVE, API_ERROR, API_SUCCESS]);
     if (response.payload.requestId === action.payload.requestId) {
       return response;
     }

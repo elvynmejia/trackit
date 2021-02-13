@@ -3,6 +3,7 @@ import {
   API_FIND_ALL,
   API_CREATE,
   API_UPDATE,
+  API_DELETE,
 } from '../api';
 
 export const API_SUCCESS = 'requests/success';
@@ -59,6 +60,7 @@ export const reducer = (state = {}, { type, payload = {} }) => {
   case API_FIND_ALL:
   case API_CREATE:
   case API_UPDATE:
+  case API_DELETE:
     return {
       ...state,
       [modelType]: {

@@ -7,6 +7,7 @@ import {
   API_CREATE,
   API_FIND_ALL,
   API_UPDATE,
+  API_DELETE,
   apiReceive,
 } from 'actions/api';
 
@@ -189,12 +190,53 @@ function* update(action) {
   }
 }
 
+function* destroy(action) {
+  const { id, modelType, requestId } = action.payload;
+  const body = yield select(state => {
+    return state.clientSide[modelType]?.[requestId] || {}
+  });
+
+  const modelClass = getModelClass(modelType);
+
+  try {
+    const { status } = yield call(modelClass.delete.bind(modelClass), id);
+    // const entity = new schema.Entity(modelType, {}, { idAttribute: 'id' });
+    //
+    // const normalizedData = normalize(Object.values(data)[0], entity);
+    // const responseIds = normalizedData.result;
+    //
+    // yield put(apiReceive({
+    //   modelType,
+    //   responseData: normalizedData.entities,
+    //   requestId,
+    // }));
+
+    yield put(apiSuccess({
+      modelType,
+      status,
+      requestId,
+    }));
+  } catch (e) {
+    const err = e;
+    debugger;
+    const { status, data } = e?.response;
+    const { message } = data;
+    yield put(apiError({
+      modelType,
+      status,
+      requestId,
+      message,
+    }));
+  }
+}
+
 
 function* apiSagas() {
   yield takeEvery(API_FIND, find);
   yield takeEvery(API_FIND_ALL, findAll);
   yield takeEvery(API_CREATE, create);
   yield takeEvery(API_UPDATE, update);
+  yield takeEvery(API_DELETE, destroy);
 }
 
 export default apiSagas;

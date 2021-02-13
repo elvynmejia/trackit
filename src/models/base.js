@@ -31,6 +31,11 @@ export class Base {
 	  const url = `${this.url}/${id}`;
 	  return await this.client.patch(url, { ...body });
 	}
+
+	static async delete(id) {
+	  const url = `${this.url}/${id}`;
+	  return await this.client.delete(url);
+	}
 }
 
 export default Base;
