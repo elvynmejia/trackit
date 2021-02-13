@@ -192,33 +192,19 @@ function* update(action) {
 
 function* destroy(action) {
   const { id, modelType, requestId } = action.payload;
-  const body = yield select(state => {
-    return state.clientSide[modelType]?.[requestId] || {}
-  });
 
   const modelClass = getModelClass(modelType);
 
   try {
     const { status } = yield call(modelClass.delete.bind(modelClass), id);
-    // const entity = new schema.Entity(modelType, {}, { idAttribute: 'id' });
-    //
-    // const normalizedData = normalize(Object.values(data)[0], entity);
-    // const responseIds = normalizedData.result;
-    //
-    // yield put(apiReceive({
-    //   modelType,
-    //   responseData: normalizedData.entities,
-    //   requestId,
-    // }));
-
+    // destroy actions return empty response bodies so no need to
+    // apiReceive the data
     yield put(apiSuccess({
       modelType,
       status,
       requestId,
     }));
   } catch (e) {
-    const err = e;
-    debugger;
     const { status, data } = e?.response;
     const { message } = data;
     yield put(apiError({

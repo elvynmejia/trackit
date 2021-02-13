@@ -1,12 +1,10 @@
 import { put, take } from 'redux-saga/effects'
 
 import { uuid } from 'uuidv4';
-import { get } from 'lodash';
 
 import { API_ERROR, API_SUCCESS } from 'actions/requests';
 
 const getRequestId = () => uuid();
-const uniqueRecordId = () => uuid();
 
 export const API_RECEIVE = 'api/receive';
 export const apiReceive = ({ modelType, responseData = {}, requestId } = {}) => ({
@@ -82,7 +80,7 @@ export function* callApiAndWait(action) {
 }
 
 export const reducer = (state = {}, { type, payload = {} }) => {
-  const { responseData, modelType, requestId } = payload;
+  const { responseData, modelType } = payload;
   switch(type) {
   case API_RECEIVE:
     return {
