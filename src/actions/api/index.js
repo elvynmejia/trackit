@@ -75,25 +75,9 @@ export const reducer = (state = {}, { type, payload = {} }) => {
   const { responseData, modelType, requestId } = payload;
   switch(type) {
   case API_RECEIVE:
-    // debugger
     return {
       ...state,
       [modelType]: {
-      //   ...(state?.[modelType]),
-      //   [requestId]: {
-      //     ...(get(state, [modelType, requestId], {})),
-      //     ...responseData[modelType],
-      //   },
-      //   ...Object.values(
-      //     responseData?.[modelType] || {}
-      //   ).reduce((acc, data) => ({
-      //     ...acc,
-      //     [uniqueRecordId()]: {
-      //       ...data,
-      //     },
-      //   }), {}),
-      // },
-
         ...state?.[modelType],
         ...responseData[modelType],
       }

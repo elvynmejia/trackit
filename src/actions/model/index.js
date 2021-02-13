@@ -23,6 +23,15 @@ export const modelUpdate = ({ modelType, name, value, requestId = getRequestId()
   },
 });
 
+export const MODEL_DELETE = 'model/delete';
+export const modelDelete = ({ modelType, requestId = getRequestId() } = {}) => ({
+  type: MODEL_DELETE,
+  payload: {
+    modelType,
+    requestId,
+  },
+});
+
 export const reducer = (state = {}, { type, payload = {} }) => {
   const {
     modelType,
@@ -32,6 +41,27 @@ export const reducer = (state = {}, { type, payload = {} }) => {
   } = payload;
 
   switch(type) {
+  case MODEL_DELETE:
+    const existingModelsByModelType = state[modelType] || {};
+    const newData = Object.keys(
+      existingModelsByModelType
+    ).reduce((accumulator, currentKey) => {
+      if (requestId !== currentKey) {
+        return {
+          ...accumulator,
+          [currentKey]: existingModelsByModelType[currentKey],
+        }
+      }
+
+      return accumulator;
+    }, {});
+
+    return {
+      ...state,
+      [modelType]: {
+        ...newData,
+      },
+    };
   case MODEL_CREATE:
     return {
       ...state,

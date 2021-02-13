@@ -15,6 +15,8 @@ import {
   apiError,
 } from 'actions/requests';
 
+import { modelDelete } from 'actions/model';
+
 const getModelClass = (modelType) => {
   const modelClass = modelTypeToModelMap[modelType];
 
@@ -128,6 +130,9 @@ function* create(action) {
       requestId,
       responseIds,
     }));
+
+    // remove model from store
+    yield put(modelDelete({ modelType, requestId }));
   } catch (e) {
     const { status, data } = e?.response;
     const { message } = data;

@@ -49,7 +49,7 @@ export const ToastMessage = (props) => {
     >
       <Alert onClose={close} severity={severity}>
         {message || errorMessage}
-        {errors.length && (
+        {!!errors.length && (
           <ul>
             {errors.map(error => (
               Object.keys(error).map(errorKey => (
