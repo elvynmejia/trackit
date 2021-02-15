@@ -1,4 +1,4 @@
-import React, { useEffect }from 'react';
+import React, { useEffect, useState, useCallback }from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -10,18 +10,19 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
+import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
+import { stateOptions } from 'constants/index';
 
 
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import BusinessIcon from '@material-ui/icons/Business';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import IconButton from '@material-ui/core/IconButton';
 
 import MenuItem from '@material-ui/core/MenuItem';
 
 import { findAll } from 'actions/api';
-import { openModal, openMenu, closeMenu } from 'actions/interfaces';
+import { openModal } from 'actions/interfaces';
 
 import { TYPE as LEAD_TYPE } from 'models/lead';
 
@@ -41,9 +42,8 @@ import { KEY } from './index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
     backgroundColor: theme.palette.background.paper,
-    margin: '10px 3px',
+    marginTop: theme.spacing(3),
   },
   chip: {
     marginBottom: theme.spacing(1)
@@ -54,7 +54,16 @@ const useStyles = makeStyles((theme) => ({
   },
   addIcon: {
     marginRight: theme.spacing(1),
-  }
+  },
+  paper: {
+    width: '100%',
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
+    height: theme.spacing(16),
+    '& > *': {
+      padding: theme.spacing(1),
+    },
+  },
 }));
 
 export const LEADS_REQUEST_ID = `${KEY}/request`;
@@ -65,27 +74,35 @@ export const EDIT_LEAD_MODAL_ID = `${KEY}/edit-lead-modal-id`;
 export const SEE_LEAD_MODAL_ID = `${KEY}/see-lead-modal-id`;
 export const ADD_NEW_STAGE_MODAL_ID = `${KEY}/add-new-stage-modal-id`;
 export const DELETE_LEAD_MODAL_ID = `${KEY}/delete-lead-modal-id`;
-
+export const FILTER_LEADS_BY = `${KEY}/filter-lead-by`;
 
 export const MENU = `${KEY}/menu`;
 export const menuId = (id) => `${MENU}/${id}`;
-
+export const defaultStatus = 'unscheduled';
 export const Leads = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const leads = useSelector(state => {
-    return Object.values(state.serverSide?.[LEAD_TYPE] ?? {});
-  });
-
-  useEffect(() => {
+  const fetchLeads = useCallback((query) => {
     dispatch(
       findAll({
         modelType: LEAD_TYPE,
-        requestId: LEADS_REQUEST_ID
+        requestId: LEADS_REQUEST_ID,
+        query,
       })
     )
-  }, [dispatch]);
+  },[dispatch]);
+
+  useEffect(() => {
+    fetchLeads({ status: defaultStatus });
+  }, [dispatch, fetchLeads]);
+
+  const leads = useSelector(({ requests, serverSide }) => {
+    return (
+      requests?.[LEAD_TYPE]?.[LEADS_REQUEST_ID]?.responseIds ?? []
+    ).map(id => serverSide?.[LEAD_TYPE]?.[id])
+  });
+
 
   const editModalId = (id) => `${EDIT_LEAD_MODAL_ID}/${id}`;
   const seeModalId = (id) => `${SEE_LEAD_MODAL_ID}/${id}`;
@@ -127,12 +144,25 @@ export const Leads = () => {
         Add New Lead
       </Fab>
 
-      <AddLead open={true} modalId={ADD_NEW_LEAD_MODAL_ID} />
+      <AddLead
+        open={true}
+        modalId={ADD_NEW_LEAD_MODAL_ID}
+      />
+
+      <FilterBox
+        defaultStatus={defaultStatus}
+        fetchLeads={fetchLeads}
+      />
+
+      {!leads.length && (
+        <Typography>No results</Typography>
+      )}
+
       {leads.map(({id: lead_id, company_name, role, status, description, current_stage_id, disabled_at }) => {
         const popOverMenuId = menuId(lead_id);
         return (
           <Card key={lead_id} className={classes.root} variant="outlined">
-            <Grid container className={classes.root} spacing={2}>
+            <Grid container spacing={2}>
               <Grid item xs={12} container>
                 <Grid
                   container
@@ -274,5 +304,57 @@ export const Leads = () => {
   );
 };
 
+const useStylesFilterBox = makeStyles((theme) => ({
+  paper: {
+    width: '100%',
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
+    height: theme.spacing(16),
+    '& > *': {
+      padding: theme.spacing(1),
+    },
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+  },
+}));
+
+const FilterBox = ({ fetchLeads, defaultStatus }) => {
+  const classes = useStylesFilterBox();
+
+  const [status, setStatus] = useState(defaultStatus);
+
+  const handleClange = ({ target }) => {
+    setStatus(target.value);
+    fetchLeads({ status: target.value });
+  }
+
+  return (
+    <Paper elevation={1} className={classes.paper}>
+      <Typography variant="h6" align="center">
+        Filter your leads by status
+      </Typography>
+
+      <TextField
+        select
+        value={status}
+        defaultValue={defaultStatus}
+        onChange={handleClange}
+        name="status"
+        size="normal"
+      >
+        {stateOptions.map(({ value, label}) => (
+          <MenuItem
+            key={value}
+            value={value}
+          >
+            {label}
+          </MenuItem>
+        ))}
+      </TextField>
+    </Paper>
+  )
+}
 
 export default Leads;
