@@ -118,17 +118,18 @@ export const EditLead = ({ modalId, leadId }) => {
 
   const requestId = `${EDIT_LEAD_REQUEST_ID}/${leadId}`;
 
-  useEffect(() => {
-    dispatch(
-      modelCreate({
-        modelType: TYPE,
-        payload: {
-          ...lead,
-        },
-        requestId,
-      })
-    );
-  }, [dispatch, lead, requestId]);
+  // FIX THIS INFINITE LOOP BUG
+  // useEffect(() => {
+  //   dispatch(
+  //     modelCreate({
+  //       modelType: TYPE,
+  //       payload: {
+  //         ...lead,
+  //       },
+  //       requestId,
+  //     })
+  //   );
+  // }, [dispatch, lead, requestId]);
 
   const boundToStoreInputProps = {
     modelType: TYPE,

@@ -6,14 +6,12 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import clsx from 'clsx';
 
-import Box from '@material-ui/core/Box';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import DoneIcon from '@material-ui/icons/Done';
 import NotListedLocationIcon from '@material-ui/icons/NotListedLocation';
 
-import purple from '@material-ui/core/colors/purple';
+// import purple from '@material-ui/core/colors/purple';
 import red from '@material-ui/core/colors/red';
 import indigo from '@material-ui/core/colors/indigo';
 import blue from '@material-ui/core/colors/blue';
@@ -31,8 +29,6 @@ import { TYPE as STAGE_TYPE} from 'models/stage';
 import { openModal } from 'actions/interfaces';
 
 import StageDetails from 'components/stages/details_modal';
-
-import { MODAL_ID } from './index';
 
 const KEY = 'component/leads/sequence';
 
@@ -58,7 +54,7 @@ export const Sequence = ({ lead_id }) => {
         requestId: lead_id,
       })
     );
-  }, []);
+  }, [dispatch,lead_id]);
 
   const stages = useSelector(state => {
     const stages = state.serverSide?.[STAGE_TYPE] ?? {};

@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { all, put, takeEvery } from 'redux-saga/effects'
 
-import { modelCreate } from 'actions/model';
 import { TYPE } from 'models/lead';
-import { BoundInput } from 'components/shared/bound_input';
 
 import ModalDialog from 'components/shared/modal_dialog';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -75,7 +73,6 @@ export function* destroySaga({ payload } = {}) {
     })
   );
 
-  debugger
   if (response.type === API_ERROR) {
     yield put(
       openToastError({
@@ -108,12 +105,6 @@ export const DeleteLead = ({ modalId, leadId }) => {
     leadId,
     requestId,
   }));
-
-  const boundToStoreInputProps = {
-    modelType: TYPE,
-    type: 'text',
-    requestId,
-  };
 
   const content = (
     <form

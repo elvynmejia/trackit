@@ -2,8 +2,7 @@ import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from '@material-ui/core/Button';
-import Snackbar, { SnackbarOrigin } from '@material-ui/core/Snackbar';
+import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
 import { closeToast } from 'actions/interfaces';
@@ -19,7 +18,6 @@ export const ToastMessage = (props) => {
   const {
     vertical,
     horizontal,
-    id,
     message = 'Success!!',
     severity,
     requestId,
@@ -71,5 +69,11 @@ ToastMessage.defaultProps = {
   open: false,
   severity: 'success',
 };
+
+ToastMessage.propTypes = {
+  severity: T.string,
+  requestId: T.string,
+  modelType: T.string,
+}
 
 export default ToastMessage;
