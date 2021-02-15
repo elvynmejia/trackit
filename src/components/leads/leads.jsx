@@ -327,7 +327,7 @@ const FilterBox = ({ fetchLeads, defaultStatus }) => {
 
   const handleClange = ({ target }) => {
     setStatus(target.value);
-    fetchLeads({ status: target.value });
+    fetchLeads({ status });
   }
 
   return (
