@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback }from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -83,26 +83,11 @@ export const Leads = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const fetchLeads = useCallback((query) => {
-    dispatch(
-      findAll({
-        modelType: LEAD_TYPE,
-        requestId: LEADS_REQUEST_ID,
-        query,
-      })
-    )
-  },[dispatch]);
-
-  useEffect(() => {
-    fetchLeads({ status: defaultStatus });
-  }, [dispatch, fetchLeads]);
-
   const leads = useSelector(({ requests, serverSide }) => {
     return (
       requests?.[LEAD_TYPE]?.[LEADS_REQUEST_ID]?.responseIds ?? []
     ).map(id => serverSide?.[LEAD_TYPE]?.[id])
   });
-
 
   const editModalId = (id) => `${EDIT_LEAD_MODAL_ID}/${id}`;
   const seeModalId = (id) => `${SEE_LEAD_MODAL_ID}/${id}`;
@@ -151,7 +136,6 @@ export const Leads = () => {
 
       <FilterBox
         defaultStatus={defaultStatus}
-        fetchLeads={fetchLeads}
       />
 
       {!leads.length && (
@@ -306,29 +290,34 @@ export const Leads = () => {
 
 const useStylesFilterBox = makeStyles((theme) => ({
   paper: {
-    width: '100%',
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(4),
     height: theme.spacing(16),
-    '& > *': {
-      padding: theme.spacing(1),
-    },
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
+    padding: theme.spacing(3),
   },
 }));
 
-const FilterBox = ({ fetchLeads, defaultStatus }) => {
+const FilterBox = (props) => {
   const classes = useStylesFilterBox();
-
-  const [status, setStatus] = useState(defaultStatus);
+  const dispatch = useDispatch();
 
   const handleClange = ({ target }) => {
-    setStatus(target.value);
-    fetchLeads({ status });
+    fetchLeads({ status: target.value });
   }
+
+  const fetchLeads = useCallback((query) => {
+    dispatch(
+      findAll({
+        modelType: LEAD_TYPE,
+        requestId: LEADS_REQUEST_ID,
+        query,
+      })
+    )
+  },[dispatch]);
+
+  useEffect(() => {
+    fetchLeads({ status: defaultStatus });
+  },[fetchLeads]);
 
   return (
     <Paper elevation={1} className={classes.paper}>
@@ -338,11 +327,11 @@ const FilterBox = ({ fetchLeads, defaultStatus }) => {
 
       <TextField
         select
-        value={status}
-        defaultValue={defaultStatus}
         onChange={handleClange}
+        defaultValue="unscheduled"
         name="status"
-        size="normal"
+        size="medium"
+        fullWidth
       >
         {stateOptions.map(({ value, label}) => (
           <MenuItem
