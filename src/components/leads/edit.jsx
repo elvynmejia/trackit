@@ -85,17 +85,6 @@ export function* saveSaga({ payload } = {}) {
   }
 
   yield put(openToastSuccess());
-  // fetch newly created lead
-  // Object.keys(response.payload.responseData.leads)[0]
-  // debugger
-
-  // yield callApiAndWait(
-  //   find({
-  //     modelType: TYPE,
-  //     id: Object.keys(response.payload.responseData.leads)[0],
-  //     requestId: FETCH_NEWLY_CREATED_LEAD_REQUEST_ID,
-  //   })
-  // );
 
   yield put(closeModal(
     modalId
@@ -119,17 +108,17 @@ export const EditLead = ({ modalId, leadId }) => {
   const requestId = `${EDIT_LEAD_REQUEST_ID}/${leadId}`;
 
   // FIX THIS INFINITE LOOP BUG
-  // useEffect(() => {
-  //   dispatch(
-  //     modelCreate({
-  //       modelType: TYPE,
-  //       payload: {
-  //         ...lead,
-  //       },
-  //       requestId,
-  //     })
-  //   );
-  // }, [dispatch, lead, requestId]);
+  useEffect(() => {
+    dispatch(
+      modelCreate({
+        modelType: TYPE,
+        payload: {
+          ...lead,
+        },
+        requestId,
+      })
+    );
+  }, [dispatch, lead, requestId]);
 
   const boundToStoreInputProps = {
     modelType: TYPE,

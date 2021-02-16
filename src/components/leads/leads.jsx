@@ -167,7 +167,6 @@ export const Leads = () => {
                       variant="h5"
                     >
                       {role}
-                      {lead_id}
                     </Typography>
                     <Chip
                       label={status}
@@ -333,7 +332,7 @@ const FilterBox = (props) => {
         size="medium"
         fullWidth
       >
-        {stateOptions.map(({ value, label}) => (
+        {stateOptions.map(({ value, label }) => (
           <MenuItem
             key={value}
             value={value}

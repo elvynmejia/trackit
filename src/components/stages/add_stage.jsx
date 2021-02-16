@@ -122,8 +122,8 @@ export const AddStage = ({ leadId, modalId }) => {
       <BoundInput
         {...boundToStoreInputProps}
         margin="normal"
-        name="status"
-        label="Status"
+        name="state"
+        label="State(required)"
         className={classes.textField}
         fullWidth
         type="select"
@@ -132,7 +132,7 @@ export const AddStage = ({ leadId, modalId }) => {
       <BoundInput
         {...boundToStoreInputProps}
         name="title"
-        label="Title"
+        label="Title (required)"
         margin="normal"
         className={classes.textField}
         fullWidth
@@ -140,14 +140,14 @@ export const AddStage = ({ leadId, modalId }) => {
       <BoundInput
         {...boundToStoreInputProps}
         name="links"
-        label="links"
+        label="Links (required)"
         className={classes.textField}
         fullWidth
       />
       <BoundInput
         {...boundToStoreInputProps}
         name="description"
-        label="Description"
+        label="Description (required)"
         className={classes.textField}
         fullWidth
         multiline
@@ -156,11 +156,19 @@ export const AddStage = ({ leadId, modalId }) => {
       <BoundInput
         {...boundToStoreInputProps}
         name="notes"
-        label="Notes"
+        label="Notes (required)"
         className={classes.textField}
         fullWidth
         multiline
         rows={4}
+      />
+      <BoundInput
+        {...boundToStoreInputProps}
+        margin="normal"
+        name="reference"
+        label="reference"
+        className={classes.textField}
+        fullWidth
       />
       <BoundInput
         {...boundToStoreInputProps}
