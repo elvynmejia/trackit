@@ -115,7 +115,7 @@ export const AddLead = ({ modalId }) => {
       <BoundInput
         {...boundToStoreInputProps}
         name="company_name"
-        label="Company Name (required)"
+        label="Company Name"
         margin="normal"
         className={classes.textField}
         fullWidth
@@ -124,7 +124,7 @@ export const AddLead = ({ modalId }) => {
       <BoundInput
         {...boundToStoreInputProps}
         name="role"
-        label="Role (Required)"
+        label="Role"
         className={classes.textField}
         fullWidth
         required
@@ -132,7 +132,7 @@ export const AddLead = ({ modalId }) => {
       <BoundInput
         {...boundToStoreInputProps}
         name="contacts"
-        label="Lis of contact(s) (required)"
+        label="Lis of contact(s)"
         className={classes.textField}
         fullWidth
         multiline

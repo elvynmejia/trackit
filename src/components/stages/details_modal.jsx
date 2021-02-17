@@ -165,44 +165,49 @@ const StageDetails = ({ stageId, index, modalId }) => {
             {...boundToStoreInputProps}
             margin="normal"
             name="state"
-            label="State (required)"
+            label="State"
             className={classes.textField}
             fullWidth
             type="select"
             options={stateOptions}
+            required
           />
           <BoundInput
             {...boundToStoreInputProps}
             name="title"
-            label="Title (required)"
+            label="Title"
             margin="normal"
             className={classes.textField}
             fullWidth
+            required
           />
           <BoundInput
             {...boundToStoreInputProps}
             name="links"
-            label="Links (required)"
+            label="Links"
             className={classes.textField}
             fullWidth
+            required
           />
           <BoundInput
             {...boundToStoreInputProps}
             name="description"
-            label="Description (required)"
+            label="Description"
             className={classes.textField}
             fullWidth
             multiline
             rows={4}
+            required
           />
           <BoundInput
             {...boundToStoreInputProps}
             name="notes"
-            label="Notes (required)"
+            label="Notes"
             className={classes.textField}
             fullWidth
             multiline
             rows={4}
+            required
           />
           <BoundInput
             {...boundToStoreInputProps}

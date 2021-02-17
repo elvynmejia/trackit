@@ -135,7 +135,7 @@ export const EditLead = ({ modalId, leadId }) => {
       <BoundInput
         {...boundToStoreInputProps}
         name="company_name"
-        label="Company Name (required)"
+        label="Company Name"
         margin="normal"
         className={classes.textField}
         fullWidth
@@ -144,7 +144,7 @@ export const EditLead = ({ modalId, leadId }) => {
       <BoundInput
         {...boundToStoreInputProps}
         name="role"
-        label="Role (Required)"
+        label="Role"
         className={classes.textField}
         fullWidth
         required
@@ -152,7 +152,7 @@ export const EditLead = ({ modalId, leadId }) => {
       <BoundInput
         {...boundToStoreInputProps}
         name="contacts"
-        label="Lis of contact(s) (required)"
+        label="Lis of contact(s)"
         className={classes.textField}
         fullWidth
         multiline
@@ -172,7 +172,7 @@ export const EditLead = ({ modalId, leadId }) => {
         {...boundToStoreInputProps}
         margin="normal"
         name="status"
-        label="Status(required)"
+        label="Status"
         className={classes.textField}
         fullWidth
         required

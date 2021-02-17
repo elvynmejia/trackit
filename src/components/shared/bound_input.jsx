@@ -29,6 +29,13 @@ export const BoundInput = ({
     state?.clientSide?.[modelType]?.[requestId]?.[property] || ''
   ));
 
+  const helperText = rest.helperText || (rest.required ? 'required' : '');
+
+  const otherAttributes = {
+    ...rest,
+    helperText,
+  };
+
   // should have a default value
   if (type === 'date' || type === 'time' || type === 'datetime') {
     if (!propertyValue) {
@@ -55,7 +62,7 @@ export const BoundInput = ({
         value={propertyValue}
         onChange={(v) => onChange({ target: { name: property, value: v }})}
         name={property}
-        {...rest}
+        {...otherAttributes}
       />
     )
   } else if (type === 'time') {
@@ -64,7 +71,7 @@ export const BoundInput = ({
         value={propertyValue}
         onChange={(v) => onChange({ target: { name: property, value: v }})}
         name={property}
-        {...rest}
+        {...otherAttributes}
       />
     )
   } else if (type === 'datime') {
@@ -73,7 +80,7 @@ export const BoundInput = ({
         value={propertyValue}
         onChange={(v) => onChange({ target: { name: property, value: v }})}
         name={property}
-        {...rest}
+        {...otherAttributes}
       />
     )
   } else if (type === 'select') {
@@ -83,7 +90,7 @@ export const BoundInput = ({
         value={propertyValue}
         onChange={onChange}
         name={property}
-        {...rest}
+        {...otherAttributes}
       >
         {options.map(({ value, label}) => (
           <MenuItem
@@ -102,7 +109,8 @@ export const BoundInput = ({
       value={propertyValue}
       onChange={onChange}
       name={property}
-      {...rest}
+      helperText={helperText}
+      {...otherAttributes}
     />
   )
 }
