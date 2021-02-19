@@ -8,6 +8,7 @@ import { TYPE } from 'models/lead';
 import { BoundInput } from 'components/shared/bound_input';
 
 import ModalDialog from 'components/shared/modal_dialog';
+import { leadStatusesOptions } from 'constants/index';
 
 import {
   closeModal,
@@ -134,6 +135,17 @@ export const EditLead = ({ modalId, leadId }) => {
     >
       <BoundInput
         {...boundToStoreInputProps}
+        type="select"
+        margin="normal"
+        name="status"
+        label="Status"
+        className={classes.textField}
+        fullWidth
+        required
+        options={leadStatusesOptions}
+      />
+      <BoundInput
+        {...boundToStoreInputProps}
         name="company_name"
         label="Company Name"
         margin="normal"
@@ -167,15 +179,6 @@ export const EditLead = ({ modalId, leadId }) => {
         fullWidth
         multiline
         rows={4}
-      />
-      <BoundInput
-        {...boundToStoreInputProps}
-        margin="normal"
-        name="status"
-        label="Status"
-        className={classes.textField}
-        fullWidth
-        required
       />
       <BoundInput
         {...boundToStoreInputProps}

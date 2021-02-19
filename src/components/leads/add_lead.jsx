@@ -114,6 +114,17 @@ export const AddLead = ({ modalId }) => {
     >
       <BoundInput
         {...boundToStoreInputProps}
+        type="select"
+        margin="normal"
+        name="status"
+        label="Status"
+        className={classes.textField}
+        fullWidth
+        required
+        options={leadStatusesOptions}
+      />
+      <BoundInput
+        {...boundToStoreInputProps}
         name="company_name"
         label="Company Name"
         margin="normal"
@@ -138,16 +149,6 @@ export const AddLead = ({ modalId }) => {
         multiline
         rows={4}
         required
-      />
-      <BoundInput
-        {...boundToStoreInputProps}
-        margin="normal"
-        name="status"
-        label="Status"
-        className={classes.textField}
-        fullWidth
-        type="select"
-        options={leadStatusesOptions}
       />
       <BoundInput
         {...boundToStoreInputProps}
