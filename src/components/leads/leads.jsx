@@ -12,7 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-import { stateOptions } from 'constants/index';
+import { leadStatusesOptions } from 'constants/index';
 
 
 import Fab from '@material-ui/core/Fab';
@@ -44,6 +44,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
     marginTop: theme.spacing(3),
+    paddingTop: 10,
+    pqddingBottom: 20,
   },
   chip: {
     marginBottom: theme.spacing(1)
@@ -278,7 +280,7 @@ export const Leads = () => {
               </Grid>
             </Grid>
             <Grid>
-              <Sequence lead_id={lead_id} />
+              <Sequence lead_id={lead_id} key={lead_id}/>
             </Grid>
           </Card>
         )
@@ -332,7 +334,7 @@ const FilterBox = (props) => {
         size="medium"
         fullWidth
       >
-        {stateOptions.map(({ value, label }) => (
+        {leadStatusesOptions.map(({ value, label }) => (
           <MenuItem
             key={value}
             value={value}

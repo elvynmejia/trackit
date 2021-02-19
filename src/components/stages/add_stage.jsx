@@ -21,7 +21,7 @@ import { TYPE } from 'models/stage';
 import { BoundInput } from 'components/shared/bound_input';
 import ModalDialog from 'components/shared/modal_dialog';
 
-import { stateOptions } from 'constants/index';
+import { stagesOptions } from 'constants/index';
 
 // title str,
 // links str
@@ -127,7 +127,7 @@ export const AddStage = ({ leadId, modalId }) => {
         className={classes.textField}
         fullWidth
         type="select"
-        options={stateOptions}
+        options={stagesOptions}
         required
       />
       <BoundInput

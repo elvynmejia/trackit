@@ -7,7 +7,7 @@ import { TYPE } from 'models/lead';
 import { BoundInput } from 'components/shared/bound_input';
 
 import ModalDialog from 'components/shared/modal_dialog';
-import { stateOptions } from 'constants/index';
+import { leadStatusesOptions } from 'constants/index';
 
 
 import {
@@ -147,7 +147,7 @@ export const AddLead = ({ modalId }) => {
         className={classes.textField}
         fullWidth
         type="select"
-        options={stateOptions}
+        options={leadStatusesOptions}
       />
       <BoundInput
         {...boundToStoreInputProps}

@@ -19,7 +19,7 @@ import { update, callApiAndWait } from 'actions/api';
 import { API_ERROR } from 'actions/requests';
 import { generateModalId } from 'components/leads/sequence';
 import Details from 'components/stages/details';
-import { stateOptions } from 'constants/index';
+import { stagesOptions } from 'constants/index';
 
 import ModalDialog from 'components/shared/modal_dialog';
 
@@ -169,7 +169,7 @@ const StageDetails = ({ stageId, index, modalId }) => {
             className={classes.textField}
             fullWidth
             type="select"
-            options={stateOptions}
+            options={stagesOptions}
             required
           />
           <BoundInput

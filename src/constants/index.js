@@ -1,16 +1,25 @@
-export const STATES = {
-  'unscheduled': 'Unscheduled', // kind of doesn't make sense
-  'phone_screen': 'Phone Screen',
-  'take_home_or_technical': 'Take home or Technical',
+export const LEAD_STATUSES = {
+  'unscheduled': 'Unscheduled',
+  'phone_screen': 'Phone screen',
+  'project': 'Project',
   'onsite': 'Onsite',
   'offer': 'Offer',
   'hired': 'Hired',
-  'not_a_good_fit': 'Not a good fit', // for me or for them
-}
+};
 
-export const stateOptions = Object.keys(STATES).map(k => ({
-  label: STATES[k],
+export const STAGE_STATUSES = {
+  'unscheduled': 'Unscheduled',
+  'scheduled': 'Scheduled',
+  'in_progress': 'In progress',
+  'completed': 'Completed',
+};
+
+export const leadStatusesOptions = Object.keys(LEAD_STATUSES).map(k => ({
+  label: LEAD_STATUSES[k],
   value: k,
 }));
 
-export default STATES;
+export const stagesOptions = Object.keys(STAGE_STATUSES).map(k => ({
+  label: STAGE_STATUSES[k],
+  value: k,
+}));
