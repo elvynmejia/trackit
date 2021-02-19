@@ -32,7 +32,7 @@ import LeadDetails from './details';
 import DeleteLead from './delete';
 
 
-import { Sequence } from './sequence';
+import { Sequence } from 'components/stages/sequence';
 import StageDetails from 'components/stages/details_modal';
 import AddStage from 'components/stages/add_stage';
 

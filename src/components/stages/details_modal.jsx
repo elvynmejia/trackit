@@ -17,7 +17,7 @@ import { TYPE } from 'models/stage';
 import { BoundInput } from 'components/shared/bound_input';
 import { update, callApiAndWait } from 'actions/api';
 import { API_ERROR } from 'actions/requests';
-import { generateModalId } from 'components/leads/sequence';
+import { generateModalId } from 'components/stages/sequence';
 import Details from 'components/stages/details';
 import { stagesOptions } from 'constants/index';
 
