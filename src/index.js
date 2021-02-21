@@ -6,7 +6,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 
-import cyan from '@material-ui/core/colors/cyan';
+// import cyan from '@material-ui/core/colors/cyan';
 import purple from '@material-ui/core/colors/purple';
 
 import red from '@material-ui/core/colors/red';
@@ -32,10 +32,10 @@ import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+// import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+// import InboxIcon from '@material-ui/icons/MoveToInbox';
+// import MailIcon from '@material-ui/icons/Mail';
 
 const themeName = 'ontrail';
 
