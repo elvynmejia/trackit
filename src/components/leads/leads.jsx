@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Chip from '@material-ui/core/Chip';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
@@ -91,6 +91,8 @@ export const Leads = () => {
     ).map(id => serverSide?.[LEAD_TYPE]?.[id])
   });
 
+  const loading = useSelector(state => state.requests[LEAD_TYPE]?.[LEADS_REQUEST_ID]?.pending || false)
+
   const editModalId = (id) => `${EDIT_LEAD_MODAL_ID}/${id}`;
   const seeModalId = (id) => `${SEE_LEAD_MODAL_ID}/${id}`;
   const addNewStageModalId = (id) => `${ADD_NEW_STAGE_MODAL_ID}/${id}`;
@@ -143,6 +145,8 @@ export const Leads = () => {
       {!leads.length && (
         <Typography>No results</Typography>
       )}
+
+      {loading && <CircularProgress />}
 
       {leads.map(({id: lead_id, company_name, role, status, description, current_stage_id, disabled_at }) => {
         const popOverMenuId = menuId(lead_id);
