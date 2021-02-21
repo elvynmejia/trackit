@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-export const BASE_BACKEND_PROXY_URL = 'http://172.28.128.7:4000/proxy/v1/';
+export const BASE_BACKEND_PROXY_URL = process.env.REACT_APP_BASE_BACKEND_PROXY_URL;
+
 const client = axios.create({
   baseURL: BASE_BACKEND_PROXY_URL,
   headers: {
