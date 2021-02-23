@@ -13,13 +13,13 @@ const App = (props) => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={2}>
+      <Grid item xs={1}>
       </Grid>
       <Grid item xs={8}>
         <ToastMessage {...toastProps } />
         <Leads />
       </Grid>
-      <Grid item xs={2}>
+      <Grid item xs={3}>
       </Grid>
     </Grid>
   );

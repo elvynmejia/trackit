@@ -44,8 +44,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
     marginTop: theme.spacing(3),
-    paddingTop: 10,
-    pqddingBottom: 20,
+    padding: theme.spacing(2),
   },
   chip: {
     marginBottom: theme.spacing(1)
@@ -66,6 +65,11 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(1),
     },
   },
+  avatarGridItem: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 }));
 
 export const LEADS_REQUEST_ID = `${KEY}/request`;
@@ -130,7 +134,7 @@ export const Leads = () => {
         onClick={() => dispatch(openModal(ADD_NEW_LEAD_MODAL_ID))}
       >
         <AddIcon className={classes.addIcon} />
-        Add New Lead
+        Create New Lead
       </Fab>
 
       <AddLead
@@ -158,7 +162,11 @@ export const Leads = () => {
                   container
                   spacing={2}
                 >
-                  <Grid item md={3}>
+                  <Grid
+                    item
+                    md={2}
+                    className={classes.avatarGridItem}
+                  >
                     <Avatar
                       aria-label="lead"
                       className={classes.image}
@@ -167,7 +175,7 @@ export const Leads = () => {
                       <BusinessIcon />
                     </Avatar>
                   </Grid>
-                  <Grid item md={6}>
+                  <Grid item md={7}>
                     <Typography
                       gutterBottom
                       variant="h5"
@@ -226,7 +234,9 @@ export const Leads = () => {
                       {description}
                     </Typography>
                   </Grid>
-                  <Grid item md={3}
+                  <Grid
+                    item
+                    md={3}
                     container
                     direction="row"
                     justify="flex-end"

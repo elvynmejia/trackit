@@ -1,9 +1,10 @@
-import React, { useEffect }from 'react';
+import React, { useEffect, useState } from 'react';
 import { PropTypes as T } from 'prop-types';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 
+import Chip from '@material-ui/core/Chip';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -25,11 +26,18 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
   },
+  step: {
+    cursor: 'pointer',
+  },
+  chip: {
+    marginLeft: theme.spacing(1)
+  },
 }));
 
 export const Sequence = ({ lead_id }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
     dispatch(
@@ -46,15 +54,22 @@ export const Sequence = ({ lead_id }) => {
     return Object.values(stages).filter(stage => stage.lead_id === lead_id);
   });
 
+  const activeStep = stages.find(s => s?.state === 'in_progress') ?? {};
+
   return (
     <div className={classes.root}>
       <Stepper
-        alternativeLabel
+        activeStep={currentStep}
+        orientation="vertical"
       >
         {stages.map(({ id, title, state }, index) => {
           const modalId = generateModalId({
             stageId: id,
           });
+
+          if (!currentStep && id === activeStep?.id) {
+            setCurrentStep(index);
+          }
 
           return (
             <Step
@@ -62,9 +77,16 @@ export const Sequence = ({ lead_id }) => {
               completed={state === 'completed'}
             >
               <StepLabel
+                className={classes.step}
                 onClick={() => dispatch(openModal(modalId))}
               >
                 {title}
+                <Chip
+                  label={state}
+                  variant="outlined"
+                  size="small"
+                  className={classes.chip}
+                />
               </StepLabel>
               <StageDetails
                 stageId={id}
