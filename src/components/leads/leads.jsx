@@ -146,7 +146,7 @@ export const Leads = () => {
         defaultStatus={defaultStatus}
       />
 
-      {!leads.length && (
+      {!leads.length && !loading && (
         <Typography>No results</Typography>
       )}
 

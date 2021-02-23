@@ -49,7 +49,7 @@ export const ModalDialog = ({
       aria-describedby="alert-dialog-description"
       TransitionComponent={Transition}
       maxWidth={maxWidth}
-
+      fullWidth
     >
       <DialogTitle align="center">
         {title}
@@ -81,6 +81,10 @@ export const ModalDialog = ({
       </DialogActions>
     </Dialog>
   );
+}
+
+ModalDialog.defaultProps = {
+  maxWidth: 'xl',
 }
 
 ModalDialog.propTypes = {
