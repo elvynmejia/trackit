@@ -8,6 +8,9 @@ import Chip from '@material-ui/core/Chip';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import IconButton from '@material-ui/core/IconButton';
+
 
 import { findAll } from 'actions/api';
 import { TYPE as STAGE_TYPE} from 'models/stage';
@@ -81,12 +84,17 @@ export const Sequence = ({ lead_id }) => {
                 onClick={() => dispatch(openModal(modalId))}
               >
                 {title}
-                <Chip
-                  label={state}
-                  variant="outlined"
-                  size="small"
-                  className={classes.chip}
-                />
+                {/*
+                  <Chip
+                    label={state}
+                    variant="outlined"
+                    size="small"
+                    className={classes.chip}
+                  />
+                */}
+                <IconButton>
+                  <MoreHorizIcon />
+                </IconButton>
               </StepLabel>
               <StageDetails
                 stageId={id}

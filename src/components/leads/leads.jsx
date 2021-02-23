@@ -196,10 +196,11 @@ export const Leads = () => {
                           gutterBottom
                           component="p"
                         >
+                          Current Stage {' '}
                           <Link
                             onClick={() => dispatch(openModal(STAGE_DETAILS_MODAL_ID))}
                           >
-                            Current Stage: {current_stage_id}
+                            {current_stage_id}
                           </Link>
                           <StageDetails
                             stageId={current_stage_id}
