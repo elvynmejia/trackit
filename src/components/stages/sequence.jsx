@@ -83,7 +83,7 @@ export const Sequence = ({ lead_id }) => {
                 className={classes.step}
                 onClick={() => dispatch(openModal(modalId))}
               >
-                {title}
+                {`${state} <> ${title}`}
                 {/*
                   <Chip
                     label={state}
