@@ -2,9 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
+// import { BrowserRouter as Router } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Link as RouterLink,
+} from 'react-router-dom';
+
 import { ThemeProvider } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
+
+import Link from '@material-ui/core/Link';
+
 
 // import cyan from '@material-ui/core/colors/cyan';
 import purple from '@material-ui/core/colors/purple';
@@ -17,12 +25,13 @@ import 'beautiful-react-diagrams/styles.css';
 import './index.css';
 import App from './App';
 
+import ListItemLink from 'components/shared/list_item_link';
+
 import reportWebVitals from './reportWebVitals';
 
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
-// import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -32,10 +41,6 @@ import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
-// import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-// import InboxIcon from '@material-ui/icons/MoveToInbox';
-// import MailIcon from '@material-ui/icons/Mail';
 
 const themeName = 'ontrail';
 
@@ -71,6 +76,12 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
+  logo: {
+    color: 'white',
+    '&:hover': {
+      textDecoration: 'none',
+    },
+  },
 }));
 
 export const NavBar = () => {
@@ -82,7 +93,14 @@ export const NavBar = () => {
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" noWrap>
-            Tralent
+            <Link
+              component={RouterLink}
+              to="/"
+              exact
+              className={classes.logo}
+            >
+              Tralent
+            </Link>
           </Typography>
         </Toolbar>
       </AppBar>
@@ -104,8 +122,11 @@ export const NavBar = () => {
                 </ListItem>
               ))}
             */}
-            <ListItem button key="leads">
-              <ListItemText primary="Leads" />
+            <ListItem>
+              <ListItemLink
+                to="/leads"
+                exact primary="Leads"
+              />
             </ListItem>
           </List>
           <Divider />
