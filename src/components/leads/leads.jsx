@@ -165,8 +165,19 @@ export const Leads = () => {
 
       {loading && <CircularProgress />}
 
-      {leads.map(({id: lead_id, company_name, role, status, description, current_stage_id, disabled_at }) => {
+      {leads.map(({
+        id: lead_id,
+        company_name,
+        role,
+        status,
+        description,
+        current_stage_id,
+        disabled_at,
+        url,
+      }) => {
+
         const popOverMenuId = menuId(lead_id);
+
         return (
           <Card key={lead_id} className={classes.root} variant="outlined">
             <Grid container spacing={2}>
@@ -287,7 +298,7 @@ export const Leads = () => {
                         See Details
                       </MenuItem>
                       <CopyToClipboard
-                        text={'some nice limnk to share with the world'}
+                        text={url}
                         onCopy={() => dispatch(openToastSuccess({ message: 'Link copied' }))}>
                         <MenuItem>
                           <ListItemIcon className={classes.listIcon}>
@@ -353,6 +364,10 @@ const FilterBox = (props) => {
   const classes = useStylesFilterBox();
   const dispatch = useDispatch();
 
+  // NOTE this sometimes will not need auth
+  const url = new URLSearchParams(window.location.search)?.get('url');
+
+
   const handleClange = ({ target }) => {
     fetchLeads({ status: target.value });
   }
@@ -368,8 +383,13 @@ const FilterBox = (props) => {
   },[dispatch]);
 
   useEffect(() => {
-    fetchLeads({ status: defaultStatus });
-  },[fetchLeads]);
+    if (url) {
+      return fetchLeads({ url: window.location.href });
+    }
+
+    return fetchLeads({ status: defaultStatus });
+
+  },[fetchLeads, url]);
 
   return (
     <Paper elevation={1} className={classes.paper}>
