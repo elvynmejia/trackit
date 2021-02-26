@@ -2,6 +2,8 @@ import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+
 
 import Chip from '@material-ui/core/Chip';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -18,11 +20,19 @@ import { leadStatusesOptions } from 'constants/index';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import BusinessIcon from '@material-ui/icons/Business';
+import EditIcon from '@material-ui/icons/Edit';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import DeleteIcon from '@material-ui/icons/Delete';
+import LinkIcon from '@material-ui/icons/Link';
 
 import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+
 
 import { findAll } from 'actions/api';
 import { openModal } from 'actions/interfaces';
+
+import { openToastSuccess } from 'actions/interfaces';
 
 import { TYPE as LEAD_TYPE } from 'models/lead';
 
@@ -69,6 +79,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  listIcon: {
+    minWidth: '35px',
   }
 }));
 
@@ -250,23 +263,46 @@ export const Leads = () => {
                       menuId={popOverMenuId}
                     >
                       <MenuItem
+                        onClick={() => addNewStage(lead_id)}
+                      >
+                        <ListItemIcon className={classes.listIcon}>
+                          <AddIcon fontSize="small" />
+                        </ListItemIcon>
+                        Add a New Stage
+                      </MenuItem>
+                      <MenuItem
                         onClick={() => editLead(lead_id)}
                       >
+                        <ListItemIcon className={classes.listIcon}>
+                          <EditIcon fontSize="small" />
+                        </ListItemIcon>
                         Edit Lead
                       </MenuItem>
                       <MenuItem
                         onClick={() => seeLead(lead_id)}
                       >
-                        See Lead Details
+                        <ListItemIcon className={classes.listIcon}>
+                          <VisibilityIcon fontSize="small" />
+                        </ListItemIcon>
+                        See Details
                       </MenuItem>
-                      <MenuItem
-                        onClick={() => addNewStage(lead_id)}
-                      >
-                        Add a Stage
-                      </MenuItem>
+                      <CopyToClipboard
+                        text={'some nice limnk to share with the world'}
+                        onCopy={() => dispatch(openToastSuccess({ message: 'Link copied' }))}>
+                        <MenuItem>
+                          <ListItemIcon className={classes.listIcon}>
+                            <LinkIcon fontSize="small" />
+                          </ListItemIcon>
+                            Copy Link
+                        </MenuItem>
+                      </CopyToClipboard>
+
                       <MenuItem
                         onClick={() => deleteCurrentLead(lead_id)}
                       >
+                        <ListItemIcon className={classes.listIcon}>
+                          <DeleteIcon fontSize="small" />
+                        </ListItemIcon>
                         Delete Lead
                       </MenuItem>
                     </PopoverMenu>
