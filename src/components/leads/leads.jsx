@@ -367,9 +367,12 @@ const FilterBox = (props) => {
   // NOTE this sometimes will not need auth
   const url = new URLSearchParams(window.location.search)?.get('url');
 
-
-  const handleClange = ({ target }) => {
-    fetchLeads({ status: target.value });
+  const handleClange = ({ target: { value } }) => {
+    if (value === 'all') {
+      fetchLeads();
+    } else {
+      fetchLeads({ status: value });
+    }
   }
 
   const fetchLeads = useCallback((query) => {
@@ -391,6 +394,14 @@ const FilterBox = (props) => {
 
   },[fetchLeads, url]);
 
+  const filterOptions = [
+    {
+      value: 'all',
+      label: 'All',
+    },
+    ...leadStatusesOptions,
+  ];
+
   return (
     <Paper elevation={1} className={classes.paper}>
       <Typography variant="h6" align="center">
@@ -405,7 +416,7 @@ const FilterBox = (props) => {
         size="medium"
         fullWidth
       >
-        {leadStatusesOptions.map(({ value, label }) => (
+        {filterOptions.map(({ value, label }) => (
           <MenuItem
             key={value}
             value={value}
