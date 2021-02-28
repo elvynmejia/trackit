@@ -189,6 +189,7 @@ export const Leads = () => {
                   <Grid
                     item
                     md={2}
+                    xs={2}
                     className={classes.avatarGridItem}
                   >
                     <Avatar
@@ -199,7 +200,7 @@ export const Leads = () => {
                       <BusinessIcon />
                     </Avatar>
                   </Grid>
-                  <Grid item md={7}>
+                  <Grid item md={7} xs={9}>
                     <Typography
                       gutterBottom
                       variant="h5"
@@ -262,6 +263,7 @@ export const Leads = () => {
                   <Grid
                     item
                     md={3}
+                    xs={1}
                     container
                     direction="row"
                     justify="flex-end"

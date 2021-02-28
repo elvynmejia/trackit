@@ -37,9 +37,9 @@ const App = (props) => {
         <Toolbar />
         <Grid container spacing={2}>
           <ToastMessage {...toastProps } />
-          <Grid item xs={1}>
+          <Grid item md={1}>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={12} md={8}>
             <Switch>
               <Route path="/" exact>
                 <Leads />
@@ -54,7 +54,7 @@ const App = (props) => {
               </Route>
             </Switch>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item md={3}>
           </Grid>
         </Grid>
       </main>
