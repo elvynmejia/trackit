@@ -1,5 +1,4 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
 import { all, put, takeEvery } from 'redux-saga/effects'
 
@@ -41,22 +40,6 @@ const deleteLead = (props) => ({
 // reference
 // current_stage_id
 
-const useStyles = makeStyles((theme) => ({
-  appBar: {
-    top: 'auto',
-    bottom: 0,
-    display: 'flex',
-    alignItems: 'flex-end',
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-  },
-  form: {
-    margin: theme.spacing(10)
-  }
-}));
-
 export function* destroySaga({ payload } = {}) {
 
   const {
@@ -96,7 +79,6 @@ export function* sagas(action) {
 };
 
 export const DeleteLead = ({ modalId, leadId }) => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const requestId = `${DELETE_LEAD_REQUEST_ID}-${leadId}`;
 
@@ -109,8 +91,6 @@ export const DeleteLead = ({ modalId, leadId }) => {
   const content = (
     <form
       autoComplete="off"
-      m={6}
-      className={classes.form}
     >
       <DialogContentText>
         Are you sure you want to delete this lead?

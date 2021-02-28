@@ -1,5 +1,4 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
 import { all, put, takeEvery } from 'redux-saga/effects'
 
@@ -41,22 +40,6 @@ const save = (modalId) => ({
 // reference
 // current_stage_id
 
-const useStyles = makeStyles((theme) => ({
-  appBar: {
-    top: 'auto',
-    bottom: 0,
-    display: 'flex',
-    alignItems: 'flex-end',
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-  },
-  form: {
-    margin: theme.spacing(10)
-  }
-}));
-
 export function* saveSaga({ payload } = {}) {
 
   const {
@@ -95,7 +78,6 @@ export function* sagas(action) {
 };
 
 export const AddLead = ({ modalId }) => {
-  const classes = useStyles();
   const dispatch = useDispatch();
 
   const onSubmit = () => dispatch(save(modalId));
@@ -109,8 +91,6 @@ export const AddLead = ({ modalId }) => {
   const content = (
     <form
       autoComplete="off"
-      m={6}
-      className={classes.form}
     >
       <BoundInput
         {...boundToStoreInputProps}
@@ -118,7 +98,6 @@ export const AddLead = ({ modalId }) => {
         margin="normal"
         name="status"
         label="Status"
-        className={classes.textField}
         fullWidth
         required
         options={leadStatusesOptions}
@@ -128,7 +107,6 @@ export const AddLead = ({ modalId }) => {
         name="company_name"
         label="Company Name"
         margin="normal"
-        className={classes.textField}
         fullWidth
         required
       />
@@ -136,7 +114,6 @@ export const AddLead = ({ modalId }) => {
         {...boundToStoreInputProps}
         name="role"
         label="Role"
-        className={classes.textField}
         fullWidth
         required
       />
@@ -144,7 +121,6 @@ export const AddLead = ({ modalId }) => {
         {...boundToStoreInputProps}
         name="contacts"
         label="Lis of contact(s)"
-        className={classes.textField}
         fullWidth
         multiline
         rows={4}
@@ -154,7 +130,6 @@ export const AddLead = ({ modalId }) => {
         {...boundToStoreInputProps}
         name="description"
         label="Description"
-        className={classes.textField}
         fullWidth
         multiline
         rows={4}
@@ -164,7 +139,6 @@ export const AddLead = ({ modalId }) => {
         margin="normal"
         name="reference"
         label="reference"
-        className={classes.textField}
         fullWidth
       />
       <BoundInput
@@ -172,7 +146,6 @@ export const AddLead = ({ modalId }) => {
         margin="normal"
         name="current_stage_id"
         label="Current Stage Id"
-        className={classes.textField}
         fullWidth
       />
     </form>

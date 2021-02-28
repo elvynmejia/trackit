@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { all, put, takeEvery } from 'redux-saga/effects'
 
@@ -44,22 +43,6 @@ const save = (props) => ({
 // reference
 // current_stage_id
 
-const useStyles = makeStyles((theme) => ({
-  appBar: {
-    top: 'auto',
-    bottom: 0,
-    display: 'flex',
-    alignItems: 'flex-end',
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-  },
-  form: {
-    margin: theme.spacing(10)
-  }
-}));
-
 export function* saveSaga({ payload } = {}) {
 
   const {
@@ -99,7 +82,6 @@ export function* sagas(action) {
 };
 
 export const EditLead = ({ modalId, leadId }) => {
-  const classes = useStyles();
   const dispatch = useDispatch();
 
   const onSubmit = () => dispatch(save({ modalId, leadId, requestId }));
@@ -130,8 +112,6 @@ export const EditLead = ({ modalId, leadId }) => {
   const content = (
     <form
       autoComplete="off"
-      m={6}
-      className={classes.form}
     >
       <BoundInput
         {...boundToStoreInputProps}
@@ -139,7 +119,6 @@ export const EditLead = ({ modalId, leadId }) => {
         margin="normal"
         name="status"
         label="Status"
-        className={classes.textField}
         fullWidth
         required
         options={leadStatusesOptions}
@@ -149,7 +128,6 @@ export const EditLead = ({ modalId, leadId }) => {
         name="company_name"
         label="Company Name"
         margin="normal"
-        className={classes.textField}
         fullWidth
         required
       />
@@ -157,7 +135,6 @@ export const EditLead = ({ modalId, leadId }) => {
         {...boundToStoreInputProps}
         name="role"
         label="Role"
-        className={classes.textField}
         fullWidth
         required
       />
@@ -165,7 +142,6 @@ export const EditLead = ({ modalId, leadId }) => {
         {...boundToStoreInputProps}
         name="contacts"
         label="Lis of contact(s)"
-        className={classes.textField}
         fullWidth
         multiline
         rows={4}
@@ -175,7 +151,6 @@ export const EditLead = ({ modalId, leadId }) => {
         {...boundToStoreInputProps}
         name="description"
         label="Description"
-        className={classes.textField}
         fullWidth
         multiline
         rows={4}
@@ -185,7 +160,6 @@ export const EditLead = ({ modalId, leadId }) => {
         margin="normal"
         name="reference"
         label="reference"
-        className={classes.textField}
         fullWidth
       />
       <BoundInput
@@ -193,7 +167,6 @@ export const EditLead = ({ modalId, leadId }) => {
         margin="normal"
         name="current_stage_id"
         label="Current Stage Id"
-        className={classes.textField}
         fullWidth
       />
     </form>

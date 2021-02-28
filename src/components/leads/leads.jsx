@@ -79,10 +79,13 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    [theme.breakpoints.only('xs')]: {
+      display: 'none',
+    }
   },
   listIcon: {
     minWidth: '35px',
-  }
+  },
 }));
 
 export const LEADS_REQUEST_ID = `${KEY}/request`;
@@ -189,7 +192,7 @@ export const Leads = () => {
                   <Grid
                     item
                     md={2}
-                    xs={2}
+                    xs={0}
                     className={classes.avatarGridItem}
                   >
                     <Avatar
@@ -200,7 +203,7 @@ export const Leads = () => {
                       <BusinessIcon />
                     </Avatar>
                   </Grid>
-                  <Grid item md={7} xs={9}>
+                  <Grid item md={7} xs={11}>
                     <Typography
                       gutterBottom
                       variant="h5"

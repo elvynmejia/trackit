@@ -7,6 +7,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
+import Chip from '@material-ui/core/Chip';
+
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import IconButton from '@material-ui/core/IconButton';
 
@@ -82,15 +84,14 @@ export const Sequence = ({ lead_id }) => {
                 className={classes.step}
                 onClick={() => dispatch(openModal(modalId))}
               >
-                {`${state} <> ${title}`}
-                {/*
-                  <Chip
-                    label={state}
-                    variant="outlined"
-                    size="small"
-                    className={classes.chip}
-                  />
-                */}
+
+                <Chip
+                  label={state}
+                  variant="outlined"
+                  size="small"
+                  className={classes.chip}
+                />
+
                 <IconButton>
                   <MoreHorizIcon />
                 </IconButton>

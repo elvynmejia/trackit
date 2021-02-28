@@ -50,13 +50,14 @@ export const LeadDetails = ({ leadId, modalId, onEdit }) => {
 
   const content = (
     <>
-      <Typography
-        variant="h4"
-        align="center"
-      >
-        id: {id}
-      </Typography>
       <List>
+        <ListItem>
+          <ListItemText
+            primary="id"
+            secondary={id}
+            textPrimary
+          />
+        </ListItem>
         <ListItem>
           <ListItemText
             primary="status"
