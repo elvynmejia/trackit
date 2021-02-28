@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { PropTypes as T } from 'prop-types';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,9 +41,13 @@ const useStyles = makeStyles((theme) => ({
 export const Sequence = ({ lead_id }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [currentStep, setCurrentStep] = useState(0);
+  // const [currentStep, setCurrentStep] = useState(0);
 
-  useEffect(() => {
+  // avoids infite renders
+  const currentStep = 0;
+  const setCurrentStep = (index) => {};
+
+  const fetchStages = useCallback(() => {
     dispatch(
       findAll({
         modelType: STAGE_TYPE,
@@ -51,7 +55,11 @@ export const Sequence = ({ lead_id }) => {
         requestId: lead_id,
       })
     );
-  }, [dispatch,lead_id]);
+  },[dispatch, lead_id]);
+
+  useEffect(() => {
+    fetchStages();
+  }, [fetchStages]);
 
   const stages = useSelector(state => {
     const stages = state.serverSide?.[STAGE_TYPE] ?? {};
