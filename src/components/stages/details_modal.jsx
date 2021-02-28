@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { all, put, takeEvery } from 'redux-saga/effects'
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -95,7 +95,17 @@ export function* sagas(action) {
 const StageDetails = ({ stageId, index, modalId }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+
   const [editing, toggleEdit] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      // component willunmount
+      if (editing) {
+        toggleEdit(false)
+      }
+    };
+  });
 
   const stage = useSelector(state => {
     return Object.values(
@@ -104,8 +114,8 @@ const StageDetails = ({ stageId, index, modalId }) => {
   });
 
   const requestId = getRequestId({
-    stageId, leadId:
-    stage.lead_id
+    stageId,
+    leadId: stage.lead_id
   });
 
   const boundToStoreInputProps = {

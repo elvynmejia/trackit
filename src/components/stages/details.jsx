@@ -39,13 +39,13 @@ const Details = ({ stageId }) => {
 
   return (
     <>
-      <Typography
-        variant="h4"
-        align="center"
-      >
-        id: {id}
-      </Typography>
       <List>
+        <ListItem>
+          <ListItemText
+            primary="id"
+            secondary={id}
+          />
+        </ListItem>
         <ListItem>
           <ListItemText
             primary="state"
