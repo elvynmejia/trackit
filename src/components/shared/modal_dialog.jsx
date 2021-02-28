@@ -2,6 +2,8 @@ import React from 'react';
 import { PropTypes as T } from 'prop-types';
 
 import { useDispatch, useSelector } from 'react-redux';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -33,6 +35,9 @@ export const ModalDialog = ({
 
   const dispatch = useDispatch();
 
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
   const {
     open
   } = useSelector(state => (
@@ -48,6 +53,7 @@ export const ModalDialog = ({
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       TransitionComponent={Transition}
+      fullScreen={fullScreen}
       maxWidth={maxWidth}
       fullWidth
     >

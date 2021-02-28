@@ -199,7 +199,7 @@ export const AddStage = ({ leadId, modalId }) => {
   return (
     <ModalDialog
       modalId={modalId}
-      title={`Add New Stage for lead ${leadId}`}
+      title={`Adding New Stage for lead ${leadId}`}
       maxWidth="lg"
       content={content}
       primaryAction={submit}
